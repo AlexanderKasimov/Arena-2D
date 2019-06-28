@@ -10,6 +10,8 @@ public class BulletScript : MonoBehaviour
 
     public Vector2 movementDir;
 
+    public float damage = 1f;
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -30,6 +32,13 @@ public class BulletScript : MonoBehaviour
     {
         rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
     }
-  
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //Debug.Log(collision.gameObject);
+        collision.gameObject.GetComponent<EnemyScript>().HandleDamage(damage);
+        Destroy(gameObject);
+    }
+
 
 }

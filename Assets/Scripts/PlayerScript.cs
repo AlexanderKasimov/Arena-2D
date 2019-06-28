@@ -4,26 +4,23 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    Rigidbody2D rb2d;
+    private Rigidbody2D rb2d;
 
     public float speed = 2f;
 
     public float weaponAngle;
 
     //private Animator animator;
+
     private SpriteRenderer sr;
 
     private Vector2 movementDir;
 
     public GameObject weapon;
 
-    private WeaponScript ws;
-
-
-    public float fireDelta = 0.5F;
-
-    private float nextFire = 0.5F;
-    private float myTime = 0.0F;
+    private WeaponScript ws;    
+   
+    private float timeSinceFire = 0.0f;
 
     private void Awake()
     {
@@ -36,7 +33,7 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+        timeSinceFire = ws.rateOfFire;
         
     }
 
@@ -48,15 +45,13 @@ public class PlayerScript : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         movementDir = new Vector2(horizontalInput, verticalInput).normalized;
 
+        timeSinceFire = timeSinceFire + Time.deltaTime;
 
-        myTime = myTime + Time.deltaTime;
-
-        if (Input.GetButton("Fire1") && myTime > nextFire)
-        {
-            nextFire = myTime + fireDelta;
+        if (Input.GetButton("Fire1") && timeSinceFire > ws.rateOfFire)
+        {       
             ws.Fire();
-            nextFire = nextFire - myTime;
-            myTime = 0.0F;
+            //Debug.Log("Fired");          
+            timeSinceFire = 0.0f;
         }
     }
 
@@ -92,7 +87,7 @@ public class PlayerScript : MonoBehaviour
         ////Sprite Rotation
         //if (movementDir.x < 0)
         //{
-        //  
+        //    sr.flipX = true;
         //}
         //if (movementDir.x > 0)
         //{

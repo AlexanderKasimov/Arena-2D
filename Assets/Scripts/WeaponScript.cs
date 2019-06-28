@@ -8,6 +8,8 @@ public class WeaponScript : MonoBehaviour
 
     public GameObject bulletPrefab;
 
+    public float rateOfFire = 0.1f;
+
     Vector2 direction;    
 
     // Start is called before the first frame update
