@@ -17,26 +17,47 @@ public class PlayerScript : MonoBehaviour
 
     public GameObject weapon;
 
+    private WeaponScript ws;
+
+
+    public float fireDelta = 0.5F;
+
+    private float nextFire = 0.5F;
+    private float myTime = 0.0F;
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
         //animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+        ws = weapon.GetComponent<WeaponScript>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+       
         
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {        
         //Get Input
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         movementDir = new Vector2(horizontalInput, verticalInput).normalized;
+
+
+        myTime = myTime + Time.deltaTime;
+
+        if (Input.GetButton("Fire1") && myTime > nextFire)
+        {
+            nextFire = myTime + fireDelta;
+            ws.Fire();
+            nextFire = nextFire - myTime;
+            myTime = 0.0F;
+        }
     }
 
     private void FixedUpdate()
@@ -67,8 +88,6 @@ public class PlayerScript : MonoBehaviour
             sr.flipX = false;
             weapon.GetComponent<SpriteRenderer>().flipY = false;
         }
-
-        //Debug.DrawRay()
 
         ////Sprite Rotation
         //if (movementDir.x < 0)
