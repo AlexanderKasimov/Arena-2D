@@ -40,5 +40,11 @@ public class BulletScript : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        collision.gameObject.GetComponent<EnemyScript>().HandleDamage(damage);
+        Destroy(gameObject);
+    }
+
 
 }

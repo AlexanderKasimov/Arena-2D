@@ -12,13 +12,18 @@ public class MapGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+       // GenerateMap();
+    }
+
+    public void GenerateMap()
+    {
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
                 Instantiate(tiles[Random.Range(0, tiles.Count)], transform.position + new Vector3(i, -j), transform.rotation, transform);
-            }            
-        }         
+            }
+        }
     }
 
     // Update is called once per frame
