@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -22,6 +23,14 @@ public class PlayerScript : MonoBehaviour
    
     private float timeSinceFire = 0.0f;
 
+
+    public float MaxHP = 3f;
+
+    private float HP;
+
+    public GameObject deathObject;
+
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -34,8 +43,31 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         timeSinceFire = ws.rateOfFire;
-        
+        HP = MaxHP;
     }
+
+    public void HandleDamage(float damage)
+    {
+        HP -= damage;
+        if (HP <= 0)
+        {
+            Death();
+        }
+    }
+
+    private void Death()
+    {
+        Invoke("Restart", 0.2f);
+       
+       // Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0));
+       // Destroy(gameObject);
+    }
+
+    private void Restart()
+    {
+        SceneManager.LoadScene("Arena_01");
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -94,4 +126,5 @@ public class PlayerScript : MonoBehaviour
         //    sr.flipX = false;
         //}
     }
+
 }

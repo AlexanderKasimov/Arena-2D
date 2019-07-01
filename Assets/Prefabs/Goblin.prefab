@@ -70,7 +70,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1727459203
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 58c8a04e880d34b48aa4c4eed4998f06, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -145,3 +145,4 @@ MonoBehaviour:
   MaxHP: 3
   deathObject: {fileID: 8573083622123250110, guid: 4574f7ab099ac0a4694a951462e7d4de,
     type: 3}
+  attackRange: 0.5

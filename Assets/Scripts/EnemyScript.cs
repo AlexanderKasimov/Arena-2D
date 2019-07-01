@@ -23,7 +23,9 @@ public class EnemyScript : MonoBehaviour
 
     public GameObject deathObject;
 
+    public float attackRange = 0.5f;
 
+    private bool isAttacking;
 
 
     private void Awake()
@@ -44,15 +46,48 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float distanceToTarget = (target.transform.position - transform.position).magnitude;
+        if (distanceToTarget < attackRange &&  !isAttacking)
+        {
+            StartCoroutine("Attack");
+        }
         
     }
     
+    IEnumerator Attack()
+    {
+        isAttacking = true;
+        yield return new WaitForSeconds(0.5f);
+        RaycastHit2D hitResult = Physics2D.BoxCast((Vector2)transform.position+movementDir*0.3f, new Vector2(0.5f, 0.5f),0f,movementDir,0f,LayerMask.GetMask("Player"));
+        if (hitResult.collider != null)
+        {
+            Debug.Log(hitResult.collider.gameObject);
+            hitResult.collider.gameObject.GetComponent<PlayerScript>().HandleDamage(1f);
+        }
+        yield return new WaitForSeconds(1f);
+        isAttacking = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (isAttacking)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube((Vector2)transform.position + movementDir * 0.3f, new Vector2(0.5f, 0.5f));
+        }       
+
+    }
+
     private void FixedUpdate()
     {
         //Перенести в корутину        
-        movementDir = (target.transform.position - transform.position).normalized;
+        if (!isAttacking)
+        {
+            movementDir = (target.transform.position - transform.position).normalized;
 
-        rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
+            rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
+        }
+        
 
         //Sprite Rotation
         if (movementDir.x < 0)
