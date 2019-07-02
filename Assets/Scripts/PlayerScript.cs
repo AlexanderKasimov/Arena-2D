@@ -11,7 +11,7 @@ public class PlayerScript : MonoBehaviour
 
     public float weaponAngle;
 
-    //private Animator animator;
+    private Animator animator;
 
     private SpriteRenderer sr;
 
@@ -34,7 +34,7 @@ public class PlayerScript : MonoBehaviour
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         ws = weapon.GetComponent<WeaponScript>();
     }
@@ -76,6 +76,8 @@ public class PlayerScript : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         movementDir = new Vector2(horizontalInput, verticalInput).normalized;
+
+        animator.SetFloat("MovementDir", movementDir.magnitude);
 
         timeSinceFire = timeSinceFire + Time.deltaTime;
 
