@@ -8,14 +8,26 @@ public class WeaponScript : MonoBehaviour
 
     public GameObject bulletPrefab;
 
-    public float rateOfFire = 0.1f;
+    private Vector2 direction;
 
-    Vector2 direction;    
+    public float maxInaccuracyAngle = 10f;
+
+    //статы
+    //RPM
+    public float rateOfFire = 240f;
+
+    public float accuracy = 10f;
+
+    public float damage = 1f;
+
+    public int magazineSize = 10;
+
+    public int curAmmo;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        curAmmo = magazineSize;
     }
 
     // Update is called once per frame
@@ -32,9 +44,17 @@ public class WeaponScript : MonoBehaviour
 
     public void Fire()
     {
+        curAmmo--;
+        Debug.Log(curAmmo);
         GameObject bullet = Instantiate(bulletPrefab, muzzle.transform.position, Quaternion.Euler(0, 0, 0));
         BulletScript bs = bullet.GetComponent<BulletScript>();
-        bs.movementDir = direction;
+        bs.damage = damage;
+        Vector2 spreadDir = direction;
+        float angle = Random.Range(-maxInaccuracyAngle*(1/accuracy), maxInaccuracyAngle*(1 / accuracy)) * Mathf.Deg2Rad;
+        spreadDir.x = direction.x * Mathf.Cos(angle) - direction.y * Mathf.Sin(angle);
+        spreadDir.y = direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle);
+
+        bs.movementDir = spreadDir;
 
     }
 

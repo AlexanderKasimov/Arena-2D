@@ -141,8 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82f1fbe529f46e4292d849e94bf69d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  MaxHP: 3
-  deathObject: {fileID: 8573083622123250110, guid: 4574f7ab099ac0a4694a951462e7d4de,
+  deathObject: {fileID: 4492900465934212495, guid: e88f1c5c78396c343bb971429a270a73,
     type: 3}
+  MaxHP: 3
+  damage: 1
+  speed: 2
   attackRange: 0.5
+  delayBeforeAttack: 0.3
+  delayAfterAttack: 0.5

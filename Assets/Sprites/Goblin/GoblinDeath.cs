@@ -14,8 +14,6 @@ public class GoblinDeath : MonoBehaviour
 
     public Vector2 direction;
 
-    private GameObject go;
-
     private SpriteRenderer sr;
 
     void Start()
@@ -23,7 +21,7 @@ public class GoblinDeath : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
 
         startPoint = transform.position;
-        endPoint = startPoint + direction * 2;
+        endPoint = startPoint + direction * 1.5f;
     }
 
     // Update is called once per frame
@@ -46,7 +44,7 @@ public class GoblinDeath : MonoBehaviour
 
         if (count < 1.0f)
         {
-            count += 2.0f * Time.deltaTime;
+            count += 3.0f * Time.deltaTime;
 
             //Vector3 m1 = Vector3.Lerp(startPoint, endPoint, count);
             //Vector3 m2 = Vector3.Lerp(lerpPoint, endPoint, count);

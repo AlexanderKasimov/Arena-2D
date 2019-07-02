@@ -36,13 +36,15 @@ public class BulletScript : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //Debug.Log(collision.gameObject);
-        collision.gameObject.GetComponent<EnemyScript>().HandleDamage(damage);
+        collision.gameObject.GetComponent<EnemyScript>().HandleDamage(damage);         
         Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        collision.gameObject.GetComponent<EnemyScript>().HandleDamage(damage);
+        EnemyScript enemyScript = collision.gameObject.GetComponent<EnemyScript>();
+        enemyScript.hitDirection = movementDir;
+        enemyScript.HandleDamage(damage);  
         Destroy(gameObject);
     }
 

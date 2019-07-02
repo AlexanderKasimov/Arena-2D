@@ -11,21 +11,28 @@ public class EnemyScript : MonoBehaviour
 
     //private Animator animator;
 
-    private GameObject target;
+    private GameObject target;   
 
-    public float speed = 2f;    
-
-    private Vector2 movementDir;
-
-    public float MaxHP = 3f;
-
-    private float HP;
+    private Vector2 movementDir;  
 
     public GameObject deathObject;
 
+    public float MaxHP = 3f;
+    private float HP;
+
+    public float damage = 1f;
+
+    public float speed = 2f;
+
     public float attackRange = 0.5f;
+    public float delayBeforeAttack = 0.3f;
+    public float delayAfterAttack = 0.5f;
 
     private bool isAttacking;
+
+    public Vector2 hitDirection;
+
+    //private Vector2 offset;
 
 
     private void Awake()
@@ -41,30 +48,31 @@ public class EnemyScript : MonoBehaviour
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player");
+        //offset = new Vector2(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
     }
 
     // Update is called once per frame
     void Update()
     {
         float distanceToTarget = (target.transform.position - transform.position).magnitude;
-        if (distanceToTarget < attackRange &&  !isAttacking)
+        if (distanceToTarget < attackRange && !isAttacking)
         {
             StartCoroutine("Attack");
         }
-        
+
     }
     
     IEnumerator Attack()
     {
         isAttacking = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(delayBeforeAttack);
         RaycastHit2D hitResult = Physics2D.BoxCast((Vector2)transform.position+movementDir*0.3f, new Vector2(0.5f, 0.5f),0f,movementDir,0f,LayerMask.GetMask("Player"));
         if (hitResult.collider != null)
         {
             Debug.Log(hitResult.collider.gameObject);
-            hitResult.collider.gameObject.GetComponent<PlayerScript>().HandleDamage(1f);
+            hitResult.collider.gameObject.GetComponent<PlayerScript>().HandleDamage(damage);
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(delayAfterAttack);
         isAttacking = false;
     }
 
@@ -84,11 +92,12 @@ public class EnemyScript : MonoBehaviour
         if (!isAttacking)
         {
             movementDir = (target.transform.position - transform.position).normalized;
+            //movementDir = ((Vector2)target.transform.position+offset - (Vector2)transform.position).normalized;
 
             rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
         }
-        
 
+        //Debug.DrawRay(transform.position, movementDir* ((Vector2)target.transform.position + offset - (Vector2)transform.position).magnitude);
         //Sprite Rotation
         if (movementDir.x < 0)
         {
@@ -112,7 +121,8 @@ public class EnemyScript : MonoBehaviour
 
     private void Death()
     {
-        Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0));
+        GoblinDeath goblinDeath = Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<GoblinDeath>();
+        goblinDeath.direction = hitDirection;
         Destroy(gameObject);
     }
 }
