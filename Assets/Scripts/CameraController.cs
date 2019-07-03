@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour
         //{
         //    direction = direction * 0.5f;
         //}
-        Vector3 desiredPosition = (Vector3)(objectPosition + direction * (mousePosition - objectPosition).magnitude / 2f) + new Vector3(0, 0, -10);
+        Vector3 desiredPosition = (Vector3)(objectPosition + direction * (mousePosition - objectPosition).magnitude / 3f) + new Vector3(0, 0, -10);
         Vector3 lerpPosition = Vector3.Lerp(transform.position, desiredPosition, lerpSpeed * Time.deltaTime);
 
         transform.position = lerpPosition;
