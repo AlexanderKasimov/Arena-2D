@@ -81,7 +81,7 @@ public class PlayerScript : MonoBehaviour
 
         timeSinceFire = timeSinceFire + Time.deltaTime;
 
-        if (Input.GetButton("Fire1") && timeSinceFire > 60f/ws.rateOfFire)
+        if (Input.GetButton("Fire1") && timeSinceFire > 60f/ws.rateOfFire && !ws.isReloading)
         {       
             ws.Fire();
             //Debug.Log("Fired");          

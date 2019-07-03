@@ -17,6 +17,8 @@ public class EnemyScript : MonoBehaviour
 
     public GameObject deathObject;
 
+    public GameObject attackEffect;
+
     public float MaxHP = 3f;
     private float HP;
 
@@ -66,10 +68,12 @@ public class EnemyScript : MonoBehaviour
     {
         isAttacking = true;
         yield return new WaitForSeconds(delayBeforeAttack);
+        GameObject attackObject = Instantiate(attackEffect, (Vector2)transform.position + movementDir * 0.6f,Quaternion.Euler(new Vector3(0,0, Vector2.SignedAngle(new Vector2(1, 0), movementDir))));
+        //Debug.Log(Vector2.SignedAngle(new Vector2(1, 0), movementDir));
         RaycastHit2D hitResult = Physics2D.BoxCast((Vector2)transform.position+movementDir*0.3f, new Vector2(0.5f, 0.5f),0f,movementDir,0f,LayerMask.GetMask("Player"));
         if (hitResult.collider != null)
         {
-            Debug.Log(hitResult.collider.gameObject);
+            //Debug.Log(hitResult.collider.gameObject);
             hitResult.collider.gameObject.GetComponent<PlayerScript>().HandleDamage(damage);
         }
         yield return new WaitForSeconds(delayAfterAttack);

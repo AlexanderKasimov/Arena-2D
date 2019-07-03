@@ -10,7 +10,10 @@ public class WeaponScript : MonoBehaviour
 
     private Vector2 direction;
 
+    //Euler angle +-
     public float maxInaccuracyAngle = 10f;
+
+    public bool isReloading;
 
     //статы
     //RPM
@@ -21,13 +24,16 @@ public class WeaponScript : MonoBehaviour
     public float damage = 1f;
 
     public int magazineSize = 10;
+    //in sec
+    public float reloadTime = 2f;
 
-    public int curAmmo;
+    private int curAmmo;
 
     // Start is called before the first frame update
     void Start()
     {
         curAmmo = magazineSize;
+        isReloading = false;
     }
 
     // Update is called once per frame
@@ -44,6 +50,16 @@ public class WeaponScript : MonoBehaviour
 
     public void Fire()
     {
+        //safe check
+        if (isReloading)
+        {
+            return;
+        }
+        if (curAmmo <= 0)
+        {            
+            StartCoroutine("Reload");
+            return;
+        }
         curAmmo--;
         Debug.Log(curAmmo);
         GameObject bullet = Instantiate(bulletPrefab, muzzle.transform.position, Quaternion.Euler(0, 0, 0));
@@ -55,7 +71,14 @@ public class WeaponScript : MonoBehaviour
         spreadDir.y = direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle);
 
         bs.movementDir = spreadDir;
+    }
 
+    IEnumerator Reload()
+    {
+        isReloading = true;
+        yield return new WaitForSeconds(reloadTime);
+        curAmmo = magazineSize;
+        isReloading = false;
     }
 
 }

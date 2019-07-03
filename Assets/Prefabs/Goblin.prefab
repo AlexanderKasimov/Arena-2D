@@ -143,9 +143,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathObject: {fileID: 4492900465934212495, guid: e88f1c5c78396c343bb971429a270a73,
     type: 3}
+  attackEffect: {fileID: 4371908833643652864, guid: f3ffd96ec6d0f964ba94d5baebd019b7,
+    type: 3}
   MaxHP: 3
   damage: 1
   speed: 2
   attackRange: 0.5
   delayBeforeAttack: 0.3
   delayAfterAttack: 0.5
+  hitDirection: {x: 0, y: 0}
