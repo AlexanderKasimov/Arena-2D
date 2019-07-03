@@ -43,9 +43,22 @@ public class BulletScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         EnemyScript enemyScript = collision.gameObject.GetComponent<EnemyScript>();
-        enemyScript.hitDirection = movementDir;
-        enemyScript.HandleDamage(damage);  
-        Destroy(gameObject);
+        if (enemyScript != null)
+        {
+            enemyScript.hitDirection = movementDir;
+            enemyScript.HandleDamage(damage);
+            Destroy(gameObject);
+        }
+        else
+        {
+            EnemyCasterScript enemyCasterScript = collision.gameObject.GetComponent<EnemyCasterScript>();
+            if (enemyCasterScript != null)
+            {
+                enemyCasterScript.hitDirection = movementDir;
+                enemyCasterScript.HandleDamage(damage);
+                Destroy(gameObject);
+            }
+        }   
     }
 
 
