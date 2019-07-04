@@ -30,6 +30,16 @@ public class PlayerScript : MonoBehaviour
 
     public GameObject deathObject;
 
+    public Vector2 hitDirection;
+
+    public Material blinkingMat;
+
+    public float blinkDuration = 0.2f;
+
+    private Material defaultMat;
+
+    private bool isBlinking = false;
+
 
     private void Awake()
     {
@@ -37,6 +47,8 @@ public class PlayerScript : MonoBehaviour
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         ws = weapon.GetComponent<WeaponScript>();
+
+        defaultMat = sr.material;
     }
 
     // Start is called before the first frame update
@@ -49,18 +61,35 @@ public class PlayerScript : MonoBehaviour
     public void HandleDamage(float damage)
     {
         HP -= damage;
+
+        if (!isBlinking)
+        {
+            StartCoroutine("Blink");
+        }
+
         if (HP <= 0)
         {
             Death();
         }
     }
 
+    IEnumerator Blink()
+    {
+        isBlinking = true;
+        sr.material = blinkingMat;
+        yield return new WaitForSeconds(blinkDuration);
+        sr.material = defaultMat;
+        isBlinking = false;
+    }
+
     private void Death()
     {
-        Invoke("Restart", 0.2f);
-       
-       // Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0));
-       // Destroy(gameObject);
+        Invoke("Restart", 2f);
+        GoblinDeath goblinDeath = Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<GoblinDeath>();
+        goblinDeath.direction = hitDirection;
+        gameObject.SetActive(false);
+        
+        // Destroy(gameObject);
     }
 
     private void Restart()

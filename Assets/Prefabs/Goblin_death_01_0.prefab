@@ -79,7 +79,7 @@ SpriteRenderer:
   m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &4492900465934212494
@@ -117,3 +117,5 @@ MonoBehaviour:
   endPoint: {x: 0, y: 0}
   lerpPoint: {x: 0, y: 0}
   direction: {x: 0, y: 0}
+  blinkingMat: {fileID: 2100000, guid: ee336a18997545d44b11d36ae0f6a7bd, type: 2}
+  blinkDuration: 0.2

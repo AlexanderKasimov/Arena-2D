@@ -16,18 +16,28 @@ public class GoblinDeath : MonoBehaviour
 
     private SpriteRenderer sr;
 
-    void Start()
-    {
-        sr = GetComponent<SpriteRenderer>();
+    public Material blinkingMat;
 
-        startPoint = transform.position;
-        endPoint = startPoint + direction * 1.5f;
-    }
+    public float blinkDuration = 0.2f;
 
-    // Update is called once per frame
+    private Material defaultMat;
 
     private float count = 0.0f;
 
+    void Start()
+    {
+        sr = GetComponent<SpriteRenderer>();
+        defaultMat = sr.material;
+        startPoint = transform.position;
+        endPoint = startPoint + direction * 1.5f;
+        sr.material = blinkingMat;
+        Invoke("SetDefaultMat",blinkDuration);
+    }
+
+   void SetDefaultMat()
+    {
+        sr.material = defaultMat;
+    }
     
 
     void Update()

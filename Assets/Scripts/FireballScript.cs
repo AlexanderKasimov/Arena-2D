@@ -36,7 +36,7 @@ public class FireballScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerScript player = collision.gameObject.GetComponent<PlayerScript>();
-        //enemyScript.hitDirection = movementDir;
+        player.hitDirection = movementDir;
         player.HandleDamage(damage);
         Destroy(gameObject);
     }

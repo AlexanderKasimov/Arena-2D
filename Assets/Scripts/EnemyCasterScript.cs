@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyCasterScript : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class EnemyCasterScript : MonoBehaviour
 
     private SpriteRenderer sr;
 
-    //private Animator animator;
+    private Animator animator;
 
     private GameObject target;
 
@@ -35,14 +36,27 @@ public class EnemyCasterScript : MonoBehaviour
 
     public Vector2 hitDirection;
 
+    public Material blinkingMat;
+
+    public float blinkDuration = 0.2f;
+
+    private Material defaultMat;
+
+    private bool isBlinking = false;
+
+    public GameObject canvas;
+
+    public Image hpBar;
+
     //private Vector2 offset;
 
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+        defaultMat = sr.material;
         HP = MaxHP;
     }
 
@@ -52,11 +66,17 @@ public class EnemyCasterScript : MonoBehaviour
     {
         target = GameObject.FindGameObjectWithTag("Player");
         //offset = new Vector2(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
+        canvas.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {    
+        animator.SetFloat("MovementDir", movementDir.magnitude);
+        if (isAttacking)
+        {
+            animator.SetFloat("MovementDir", 0f);
+        }
         float distanceToTarget = (target.transform.position - transform.position).magnitude;
         if (distanceToTarget < attackRange && !isAttacking)
         {
@@ -67,8 +87,9 @@ public class EnemyCasterScript : MonoBehaviour
 
     IEnumerator Attack()
     {
-        isAttacking = true;
+        isAttacking = true;       
         yield return new WaitForSeconds(delayBeforeAttack);
+        //GameObject attackObject = Instantiate(attackEffect, (Vector2)transform.position + movementDir * 0.6f, Quaternion.Euler(new Vector3(0, 0, Vector2.SignedAngle(new Vector2(1, 0), movementDir))));
         GameObject bullet = Instantiate(fireballPrefab, (Vector2)transform.position + movementDir * 0.3f, Quaternion.Euler(0, 0, 0));
         FireballScript fireballScript = bullet.GetComponent<FireballScript>();
         fireballScript.damage = damage;
@@ -109,11 +130,29 @@ public class EnemyCasterScript : MonoBehaviour
     public void HandleDamage(float damage)
     {
         HP -= damage;
+
+        if (!isBlinking)
+        {
+            StartCoroutine("Blink");
+        }
+        canvas.SetActive(true);
+        hpBar.fillAmount = HP / MaxHP;
+
         if (HP <= 0)
         {
             Death();
         }
     }
+
+    IEnumerator Blink()
+    {
+        isBlinking = true;
+        sr.material = blinkingMat;
+        yield return new WaitForSeconds(blinkDuration);
+        sr.material = defaultMat;
+        isBlinking = false;
+    }
+
 
     private void Death()
     {
