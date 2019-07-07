@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponScript : MonoBehaviour
 {
@@ -25,15 +26,35 @@ public class WeaponScript : MonoBehaviour
 
     public int magazineSize = 10;
     //in sec
-    public float reloadTime = 2f;
+    public float reloadTime = 1f;
 
     private int curAmmo;
+
+    //Added for Magazine------------------------------------
+    public Image magazineImage;
+    public Text magazineText;
+    //------------------------------------------------------
+
+    //Added for slider--------------------------------------
+    public Slider slider;
+    //------------------------------------------------------
 
     // Start is called before the first frame update
     void Start()
     {
         curAmmo = magazineSize;
         isReloading = false;
+
+        //Added for Magazine------------------------------------
+        magazineImage.fillAmount = 1;
+        magazineText.text = (curAmmo + "/" + magazineSize);
+        //------------------------------------------------------
+
+        //Added for slider--------------------------------------
+        slider.gameObject.SetActive(false);
+        //------------------------------------------------------
+
+        
     }
 
     // Update is called once per frame
@@ -61,6 +82,11 @@ public class WeaponScript : MonoBehaviour
             return;
         }
         curAmmo--;
+        //Added for Magazine------------------------------------
+        magazineImage.fillAmount = curAmmo / (magazineSize*1.0f);
+        magazineText.text = (curAmmo + "/" + magazineSize);
+        //------------------------------------------------------
+
         Debug.Log(curAmmo);
         GameObject bullet = Instantiate(bulletPrefab, muzzle.transform.position, Quaternion.Euler(0, 0, 0));
         BulletScript bs = bullet.GetComponent<BulletScript>();
@@ -76,8 +102,34 @@ public class WeaponScript : MonoBehaviour
     IEnumerator Reload()
     {
         isReloading = true;
+
+        //Added for slider-------------------------------------------
+        slider.gameObject.SetActive(true);
+
+        /*
+        for (int i = 0; i < 100; i++)
+        {
+            slider.value = i / 100f;
+            Debug.Log(i/100);
+            yield return new WaitForSeconds(reloadTime/100f);
+        }
+        */
+        slider.animator.speed = 1 / reloadTime;
+        slider.animator.Play("ReloadAnimation");
+        //------------------------------------------------------
         yield return new WaitForSeconds(reloadTime);
+
+
+        //Added for slider-------------------------------------------
+        slider.gameObject.SetActive(false);
+        //------------------------------------------------------
+
+
         curAmmo = magazineSize;
+        //Added for Magazine------------------------------------
+        magazineImage.fillAmount = 1;
+        magazineText.text = (curAmmo + "/" + magazineSize);
+        //------------------------------------------------------
         isReloading = false;
     }
 

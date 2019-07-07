@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -40,6 +41,9 @@ public class PlayerScript : MonoBehaviour
 
     private bool isBlinking = false;
 
+    public Text hpBarText;
+
+    public Image hpBarImage;
 
     private void Awake()
     {
@@ -54,14 +58,24 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         timeSinceFire = ws.rateOfFire;
         HP = MaxHP;
+
+        //Added----------------------------------
+        hpBarImage.fillAmount = 1;
+        hpBarText.text = HP + "/" + MaxHP;
+        //---------------------------------------
     }
 
     public void HandleDamage(float damage)
     {
         HP -= damage;
 
+        //Added----------------------------------
+        hpBarImage.fillAmount = HP / MaxHP;
+        hpBarText.text = HP + "/" + MaxHP;
+        //---------------------------------------
         if (!isBlinking)
         {
             StartCoroutine("Blink");
