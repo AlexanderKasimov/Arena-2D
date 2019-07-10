@@ -65,8 +65,12 @@ public class WeaponScript : MonoBehaviour
 
         direction = (mousePosition - objectPosition).normalized;
 
-        Debug.DrawRay(muzzle.transform.position, direction*100,Color.red);     
+        Debug.DrawRay(muzzle.transform.position, direction*100,Color.red);
 
+        if (Input.GetButton("Reload") && !isReloading)
+        {
+            StartCoroutine("Reload");
+        }
     }
 
     public void Fire()
@@ -76,16 +80,16 @@ public class WeaponScript : MonoBehaviour
         {
             return;
         }
+        curAmmo--;
+        //Added for Magazine------------------------------------
+        magazineImage.fillAmount = curAmmo / (magazineSize * 1.0f);
+        magazineText.text = (curAmmo + "/" + magazineSize);
+        //------------------------------------------------------
         if (curAmmo <= 0)
         {            
             StartCoroutine("Reload");
             return;
-        }
-        curAmmo--;
-        //Added for Magazine------------------------------------
-        magazineImage.fillAmount = curAmmo / (magazineSize*1.0f);
-        magazineText.text = (curAmmo + "/" + magazineSize);
-        //------------------------------------------------------
+        }        
 
         //Debug.Log(curAmmo);
         GameObject bullet = Instantiate(bulletPrefab, muzzle.transform.position, Quaternion.Euler(0, 0, 0));
@@ -98,6 +102,8 @@ public class WeaponScript : MonoBehaviour
 
         bs.movementDir = spreadDir;
     }
+
+
 
     IEnumerator Reload()
     {
@@ -119,12 +125,9 @@ public class WeaponScript : MonoBehaviour
         //------------------------------------------------------
         yield return new WaitForSeconds(reloadTime);
 
-
         //Added for slider-------------------------------------------
         slider.gameObject.SetActive(false);
         //------------------------------------------------------
-
-
         curAmmo = magazineSize;
         //Added for Magazine------------------------------------
         magazineImage.fillAmount = 1;
