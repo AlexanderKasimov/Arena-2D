@@ -87,7 +87,7 @@ public class WeaponScript : MonoBehaviour
         magazineText.text = (curAmmo + "/" + magazineSize);
         //------------------------------------------------------
 
-        Debug.Log(curAmmo);
+        //Debug.Log(curAmmo);
         GameObject bullet = Instantiate(bulletPrefab, muzzle.transform.position, Quaternion.Euler(0, 0, 0));
         BulletScript bs = bullet.GetComponent<BulletScript>();
         bs.damage = damage;

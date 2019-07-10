@@ -20,6 +20,10 @@ public class EnemyScript : MonoBehaviour
 
     public GameObject attackEffect;
 
+    //public GameObject waveManagerObject;
+
+    //private WaveManager waveManager;
+
     public float MaxHP = 3f;
     private float HP;
 
@@ -55,6 +59,7 @@ public class EnemyScript : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+        //waveManager = waveManagerObject.GetComponent<WaveManager>();
         defaultMat = sr.material;
         HP = MaxHP;
     }
@@ -166,7 +171,7 @@ public class EnemyScript : MonoBehaviour
     private void Death()
     {
         GoblinDeath goblinDeath = Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<GoblinDeath>();
-        goblinDeath.direction = hitDirection;
+        goblinDeath.direction = hitDirection;       
         Destroy(gameObject);
     }
 }
