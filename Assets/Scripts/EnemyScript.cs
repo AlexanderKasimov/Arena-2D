@@ -53,13 +53,27 @@ public class EnemyScript : MonoBehaviour
 
     //private Vector2 offset;
 
+    private Vector2 movementPoint;
+
+    private Vector2 movementPointOffset;
+
+    private float movementPointRadius;
+
+    //private GameObject movementManagerObject;
+
+    private EnemyMovementManager movementManager;
+
+    private string curRadius; 
+
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
+        animator = GetComponentInChildren<Animator>();
+        sr = GetComponentInChildren<SpriteRenderer>();
+        //sr = GetComponent<SpriteRenderer>();
         //waveManager = waveManagerObject.GetComponent<WaveManager>();
+        //movementManager = movementManagerObject.GetComponent<EnemyMovementManager>();
         defaultMat = sr.material;
         HP = MaxHP;
     }
@@ -69,8 +83,12 @@ public class EnemyScript : MonoBehaviour
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player");
+        movementManager = FindObjectOfType<EnemyMovementManager>();
         //offset = new Vector2(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
         canvas.SetActive(false);
+        movementPointRadius = movementManager.bigRadius;
+        InvokeRepeating("GenerateMovementPointOffset", 0.1f, 5f);
+        //GenerateMovementPoint();
     }
 
     // Update is called once per frame
@@ -86,7 +104,23 @@ public class EnemyScript : MonoBehaviour
         {
             StartCoroutine("Attack");
         }
+    }
 
+
+    private void GenerateMovementPointOffset()
+    {
+        //switch (curRadius)
+        //{
+        //    case "big":
+                
+
+        //        break;
+        //    case "medium": break;
+        //    case "small": break;
+        //    default:
+        //        break;
+        //}
+        movementPointOffset = Random.insideUnitCircle * movementPointRadius; 
     }
     
     IEnumerator Attack()
@@ -97,13 +131,10 @@ public class EnemyScript : MonoBehaviour
         //Debug.Log(Vector2.SignedAngle(new Vector2(1, 0), movementDir));
         RaycastHit2D hitResult = Physics2D.BoxCast((Vector2)transform.position+movementDir*0.3f, new Vector2(0.5f, 0.5f),0f,movementDir,0f,LayerMask.GetMask("Player"));
         if (hitResult.collider != null)
-        {
-            //Debug.Log(hitResult.collider.gameObject);
+        {        
             PlayerScript player = hitResult.collider.gameObject.GetComponent<PlayerScript>();
             player.hitDirection = movementDir;
-            player.HandleDamage(damage);           
-            //hitResult.collider.gameObject.GetComponent<PlayerScript>().HandleDamage(damage);
-           
+            player.HandleDamage(damage);        
         }
         yield return new WaitForSeconds(delayAfterAttack);
         isAttacking = false;
@@ -115,7 +146,18 @@ public class EnemyScript : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube((Vector2)transform.position + movementDir * 0.3f, new Vector2(0.5f, 0.5f));
-        }       
+        }
+        if (target != null)
+        {
+            Gizmos.DrawWireSphere(target.transform.position, movementPointRadius);      
+            Gizmos.DrawWireCube(movementPoint, new Vector2(0.2f, 0.2f));
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(target.transform.position, movementManager.bigRadius);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(target.transform.position, movementManager.mediumRadius);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(target.transform.position, movementManager.smallRadius);
+        }
 
     }
 
@@ -124,10 +166,51 @@ public class EnemyScript : MonoBehaviour
         //Перенести в корутину        
         if (!isAttacking)
         {
-            movementDir = (target.transform.position - transform.position).normalized;
+            float distanceToTarget = (target.transform.position - transform.position).magnitude;
+            if (distanceToTarget > movementManager.bigRadius )
+            {
+                curRadius = "big";
+                movementPointRadius = movementManager.bigRadius;
+                //movementPoint = (Vector2)target.transform.position + movementPointOffset;
+            }
+            else
+            {
+                if (distanceToTarget > movementManager.mediumRadius)
+                {                
+                    if (!string.Equals(curRadius, "medium"))
+                    {
+                        curRadius = "medium";
+                        movementPointRadius = movementManager.mediumRadius;
+                        GenerateMovementPointOffset();
+                    }   
+                }
+                else
+                {
+                    if (distanceToTarget > movementManager.smallRadius)
+                    {
+                        if (!string.Equals(curRadius, "small"))
+                        {
+                            curRadius = "small";
+                            movementPointRadius = movementManager.smallRadius;
+                            GenerateMovementPointOffset();
+                        }
+                    }
+                    else
+                    {
+                        if (!string.Equals(curRadius, "close"))
+                        {
+                            curRadius = "close";
+                            movementPointRadius = 0f;
+                            GenerateMovementPointOffset();
+                        }               
+                    }
+                }
+           
+            }
+            movementPoint = (Vector2)target.transform.position + movementPointOffset;        
+            movementDir = (movementPoint - (Vector2)transform.position).normalized;
             //movementDir = ((Vector2)target.transform.position+offset - (Vector2)transform.position).normalized;
-
-            rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
+            rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);                   
         }
 
         //Debug.DrawRay(transform.position, movementDir* ((Vector2)target.transform.position + offset - (Vector2)transform.position).magnitude);
@@ -139,8 +222,7 @@ public class EnemyScript : MonoBehaviour
         if (movementDir.x > 0)
         {
             sr.flipX = false;
-        }
-
+        }       
     }
 
     public void HandleDamage(float damage)

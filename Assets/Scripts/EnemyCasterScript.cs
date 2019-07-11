@@ -51,11 +51,18 @@ public class EnemyCasterScript : MonoBehaviour
     //private Vector2 offset;
 
 
+    private Vector2 movementPoint;
+
+    private Vector2 movementPointOffset;
+
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
+        //animator = GetComponent<Animator>();
+        // sr = GetComponent<SpriteRenderer>();
+        animator = GetComponentInChildren<Animator>();
+        sr = GetComponentInChildren<SpriteRenderer>();
         defaultMat = sr.material;
         HP = MaxHP;
     }
@@ -67,6 +74,7 @@ public class EnemyCasterScript : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player");
         //offset = new Vector2(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
         canvas.SetActive(false);
+        InvokeRepeating("GenerateMovementPointOffset", 0.1f, 5f);
     }
 
     // Update is called once per frame
@@ -85,12 +93,18 @@ public class EnemyCasterScript : MonoBehaviour
 
     }
 
+    private void GenerateMovementPointOffset()
+    {
+        movementPointOffset = Random.insideUnitCircle * attackRange;
+    }
+
     IEnumerator Attack()
     {
         isAttacking = true;       
         yield return new WaitForSeconds(delayBeforeAttack);
         //GameObject attackObject = Instantiate(attackEffect, (Vector2)transform.position + movementDir * 0.6f, Quaternion.Euler(new Vector3(0, 0, Vector2.SignedAngle(new Vector2(1, 0), movementDir))));
-        GameObject bullet = Instantiate(fireballPrefab, (Vector2)transform.position + movementDir * 0.3f, Quaternion.Euler(0, 0, 0));
+        Vector2 aimDir = (target.transform.position - transform.position).normalized;
+        GameObject bullet = Instantiate(fireballPrefab, (Vector2)transform.position + aimDir * 0.3f, Quaternion.Euler(0, 0, 0));
         FireballScript fireballScript = bullet.GetComponent<FireballScript>();
         fireballScript.damage = damage;
         //Vector2 spreadDir = movementDir;
@@ -98,7 +112,7 @@ public class EnemyCasterScript : MonoBehaviour
         //spreadDir.x = direction.x * Mathf.Cos(angle) - direction.y * Mathf.Sin(angle);
         //spreadDir.y = direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle);
 
-        fireballScript.movementDir = movementDir;
+        fireballScript.movementDir = aimDir;
         yield return new WaitForSeconds(delayAfterAttack);
         isAttacking = false;
     }
@@ -108,12 +122,14 @@ public class EnemyCasterScript : MonoBehaviour
         //Перенести в корутину        
         if (!isAttacking)
         {
-            
-            //movementDir = ((Vector2)target.transform.position+offset - (Vector2)transform.position).normalized;
+            //float distanceToTarget = (target.transform.position - transform.position).magnitude;
 
+            //movementDir = ((Vector2)target.transform.position+offset - (Vector2)transform.position).normalized;
+            movementPoint = (Vector2)target.transform.position + movementPointOffset;
+            movementDir = (movementPoint - (Vector2)transform.position).normalized;
             rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
         }
-        movementDir = (target.transform.position - transform.position).normalized;
+        //movementDir = (target.transform.position - transform.position).normalized;
         //Debug.DrawRay(transform.position, movementDir* ((Vector2)target.transform.position + offset - (Vector2)transform.position).magnitude);
         //Sprite Rotation
         if (movementDir.x < 0)
