@@ -22,11 +22,16 @@ public class WaveManager : MonoBehaviour
 
     public Text waveText;
 
+    public GameObject awardScriptObject;
+
+    private AwardScript awardScript;
+
     // Start is called before the first frame update
     void Start()
     {
         //waveActivator = waveActivatorObject.GetComponent<WaveActivator>();
         spawnersScripts = new List<GroupSpawnerScript>();
+        awardScript = awardScriptObject.GetComponent<AwardScript>();
         foreach (var item in spawners)
         {
             spawnersScripts.Add(item.GetComponent<GroupSpawnerScript>());
@@ -50,8 +55,8 @@ public class WaveManager : MonoBehaviour
         }
         waveNumber++;
         waveText.text = "Wave " + waveNumber;
-        InvokeRepeating("CheckEndWave",1f,1f);               
-
+        InvokeRepeating("CheckEndWave",1f,1f);
+        awardScript.DestroyPickups();
     }
 
     public void CheckEndWave()
@@ -71,6 +76,7 @@ public class WaveManager : MonoBehaviour
     {
         CancelInvoke("CheckEndWave");
         waveActivatorObject.SetActive(true);
+        awardScript.SpawnHealthPickup();
     }
 
     // Update is called once per frame

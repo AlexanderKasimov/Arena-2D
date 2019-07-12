@@ -61,10 +61,10 @@ public class PlayerScript : MonoBehaviour
         
         timeSinceFire = ws.rateOfFire;
         HP = MaxHP;
-
+        UpdateUI();
         //Added----------------------------------
-        hpBarImage.fillAmount = 1;
-        hpBarText.text = HP + "/" + MaxHP;
+        //hpBarImage.fillAmount = 1;
+        //hpBarText.text = HP + "/" + MaxHP;
         //---------------------------------------
     }
 
@@ -73,8 +73,7 @@ public class PlayerScript : MonoBehaviour
         HP -= damage;
 
         //Added----------------------------------
-        hpBarImage.fillAmount = HP / MaxHP;
-        hpBarText.text = HP + "/" + MaxHP;
+        UpdateUI();
         //---------------------------------------
         if (!isBlinking)
         {
@@ -85,6 +84,19 @@ public class PlayerScript : MonoBehaviour
         {
             Death();
         }
+    }
+
+    public void RegenHealth(float regenHP)
+    {
+        //Debug.Log(Mathf.Clamp(regenHP + HP, 0f, MaxHP));
+        HP = Mathf.Clamp(regenHP + HP,0f,MaxHP);
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        hpBarImage.fillAmount = HP / MaxHP;
+        hpBarText.text = HP + "/" + MaxHP;
     }
 
     IEnumerator Blink()

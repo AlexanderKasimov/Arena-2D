@@ -39,6 +39,7 @@ public class WeaponScript : MonoBehaviour
     public Slider slider;
     //------------------------------------------------------
 
+    private AudioSource fireSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -53,7 +54,7 @@ public class WeaponScript : MonoBehaviour
         //Added for slider--------------------------------------
         slider.gameObject.SetActive(false);
         //------------------------------------------------------
-
+        fireSound = GetComponent<AudioSource>();
         
     }
 
@@ -101,6 +102,8 @@ public class WeaponScript : MonoBehaviour
         spreadDir.y = direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle);
 
         bs.movementDir = spreadDir;
+
+        fireSound.Play();
     }
 
 
