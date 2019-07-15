@@ -10,7 +10,7 @@ public class PlayerScript : MonoBehaviour
 
     public float speed = 2f;
 
-    public float weaponAngle;
+    //public float weaponAngle;
 
     private Animator animator;
 
@@ -20,7 +20,10 @@ public class PlayerScript : MonoBehaviour
 
     public GameObject weapon;
 
-    private WeaponScript ws;    
+    public GameObject weaponSocket;
+
+    [HideInInspector]
+    public WeaponScript ws;    
    
     private float timeSinceFire = 0.0f;
 
@@ -45,13 +48,20 @@ public class PlayerScript : MonoBehaviour
 
     public Image hpBarImage;
 
+    public Slider reloadSlider;
+
+    public Text ammoText;
+
+    public Image weaponImage;
+
+    public GameObject weaponPickupPlace;
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         ws = weapon.GetComponent<WeaponScript>();
-
         defaultMat = sr.material;
     }
 
@@ -62,67 +72,18 @@ public class PlayerScript : MonoBehaviour
         timeSinceFire = ws.rateOfFire;
         HP = MaxHP;
         UpdateUI();
+        //WeaponInit;
+        reloadSlider.gameObject.SetActive(false);
+        ws.reloadSlider = reloadSlider;
+        ws.weaponImage = weaponImage;
+        ws.ammoText = ammoText;
+        ws.UpdateUI();
+        ws.weaponImage.sprite = ws.weaponImageSprite;
         //Added----------------------------------
         //hpBarImage.fillAmount = 1;
         //hpBarText.text = HP + "/" + MaxHP;
         //---------------------------------------
     }
-
-    public void HandleDamage(float damage)
-    {
-        HP -= damage;
-
-        //Added----------------------------------
-        UpdateUI();
-        //---------------------------------------
-        if (!isBlinking)
-        {
-            StartCoroutine("Blink");
-        }
-
-        if (HP <= 0)
-        {
-            Death();
-        }
-    }
-
-    public void RegenHealth(float regenHP)
-    {
-        //Debug.Log(Mathf.Clamp(regenHP + HP, 0f, MaxHP));
-        HP = Mathf.Clamp(regenHP + HP,0f,MaxHP);
-        UpdateUI();
-    }
-
-    private void UpdateUI()
-    {
-        hpBarImage.fillAmount = HP / MaxHP;
-        hpBarText.text = HP + "/" + MaxHP;
-    }
-
-    IEnumerator Blink()
-    {
-        isBlinking = true;
-        sr.material = blinkingMat;
-        yield return new WaitForSeconds(blinkDuration);
-        sr.material = defaultMat;
-        isBlinking = false;
-    }
-
-    private void Death()
-    {
-        Invoke("Restart", 2f);
-        GoblinDeath goblinDeath = Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<GoblinDeath>();
-        goblinDeath.direction = hitDirection;
-        gameObject.SetActive(false);
-        
-        // Destroy(gameObject);
-    }
-
-    private void Restart()
-    {
-        SceneManager.LoadScene("Arena_01");
-    }
-
 
     // Update is called once per frame
     void Update()
@@ -136,7 +97,7 @@ public class PlayerScript : MonoBehaviour
 
         timeSinceFire = timeSinceFire + Time.deltaTime;
 
-        if (Input.GetButton("Fire1") && timeSinceFire > 60f/ws.rateOfFire && !ws.isReloading)
+        if (Input.GetButton("Fire1") && /*ws != null &&*/ timeSinceFire > 60f/ws.rateOfFire && !ws.isReloading)
         {       
             ws.Fire();
             //Debug.Log("Fired");          
@@ -158,7 +119,7 @@ public class PlayerScript : MonoBehaviour
 
         weapon.transform.rotation = Quaternion.Euler(0f, 0f, deltaRot);
 
-        weaponAngle = weapon.transform.rotation.eulerAngles.z;
+        //weaponAngle = weapon.transform.rotation.eulerAngles.z;
 
         if (weapon.transform.rotation.eulerAngles.z > 90 && weapon.transform.rotation.eulerAngles.z < 270)
         {            
@@ -182,6 +143,77 @@ public class PlayerScript : MonoBehaviour
         //{
         //    sr.flipX = false;
         //}
+    }
+
+    public void PickupWeapon(GameObject weaponPrefab)
+    {
+        Instantiate(ws.pickupPrefab, weaponPickupPlace.transform.position, Quaternion.Euler(0f, 0f, 0f));
+        GameObject newWeapon = Instantiate(weaponPrefab, weaponSocket.transform);
+        Destroy(weapon.gameObject);
+        weapon = newWeapon;
+        ws = weapon.GetComponent<WeaponScript>();
+        ws.reloadSlider = reloadSlider;
+        ws.weaponImage = weaponImage;
+        ws.ammoText = ammoText;
+        ws.UpdateUI();
+        ws.weaponImage.sprite = ws.weaponImageSprite;
+    }
+
+
+    public void RegenHealth(float regenHP)
+    {
+        //Debug.Log(Mathf.Clamp(regenHP + HP, 0f, MaxHP));
+        HP = Mathf.Clamp(regenHP + HP, 0f, MaxHP);
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        hpBarImage.fillAmount = HP / MaxHP;
+        hpBarText.text = HP + "/" + MaxHP;
+    }
+
+
+    public void HandleDamage(float damage)
+    {
+        HP -= damage;
+
+        //Added----------------------------------
+        UpdateUI();
+        //---------------------------------------
+        if (!isBlinking)
+        {
+            StartCoroutine("Blink");
+        }
+
+        if (HP <= 0)
+        {
+            Death();
+        }
+    }
+
+    IEnumerator Blink()
+    {
+        isBlinking = true;
+        sr.material = blinkingMat;
+        yield return new WaitForSeconds(blinkDuration);
+        sr.material = defaultMat;
+        isBlinking = false;
+    }
+
+    private void Death()
+    {
+        Invoke("Restart", 2f);
+        GoblinDeath goblinDeath = Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<GoblinDeath>();
+        goblinDeath.direction = hitDirection;
+        gameObject.SetActive(false);
+
+        // Destroy(gameObject);
+    }
+
+    private void Restart()
+    {
+        SceneManager.LoadScene("Arena_02");
     }
 
 }

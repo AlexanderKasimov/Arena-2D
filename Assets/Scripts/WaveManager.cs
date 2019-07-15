@@ -77,6 +77,20 @@ public class WaveManager : MonoBehaviour
         CancelInvoke("CheckEndWave");
         waveActivatorObject.SetActive(true);
         awardScript.SpawnHealthPickup();
+        if (waveNumber % 2 == 0)
+        {
+            awardScript.SpawnWeaponPickup(waveNumber);
+        }
+        //switch (waveNumber)
+        //{
+        //   case 2:
+
+        //        break;
+        //   case 4:
+        //        break;
+        //    default:
+        //        break;
+        //}
     }
 
     // Update is called once per frame

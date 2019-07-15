@@ -9,6 +9,10 @@ public class WeaponScript : MonoBehaviour
 
     public GameObject bulletPrefab;
 
+    public Sprite weaponImageSprite;
+
+    public GameObject pickupPrefab;
+
     private Vector2 direction;
 
     //Euler angle +-
@@ -30,14 +34,16 @@ public class WeaponScript : MonoBehaviour
 
     private int curAmmo;
 
-    //Added for Magazine------------------------------------
-    public Image magazineImage;
-    public Text magazineText;
-    //------------------------------------------------------
 
-    //Added for slider--------------------------------------
-    public Slider slider;
-    //------------------------------------------------------
+    public Text ammoText;
+
+    public Image weaponImage;
+
+    
+
+
+    public Slider reloadSlider;
+
 
     private AudioSource fireSound;
     // Start is called before the first frame update
@@ -46,14 +52,13 @@ public class WeaponScript : MonoBehaviour
         curAmmo = magazineSize;
         isReloading = false;
 
-        //Added for Magazine------------------------------------
-        magazineImage.fillAmount = 1;
-        magazineText.text = (curAmmo + "/" + magazineSize);
-        //------------------------------------------------------
+        if (ammoText != null)
+        {
+            UpdateUI();
+        } 
+        //magazineImage.fillAmount = 1;
+        //magazineText.text = (curAmmo + "/" + magazineSize);        
 
-        //Added for slider--------------------------------------
-        slider.gameObject.SetActive(false);
-        //------------------------------------------------------
         fireSound = GetComponent<AudioSource>();
         
     }
@@ -82,10 +87,11 @@ public class WeaponScript : MonoBehaviour
             return;
         }
         curAmmo--;
-        //Added for Magazine------------------------------------
-        magazineImage.fillAmount = curAmmo / (magazineSize * 1.0f);
-        magazineText.text = (curAmmo + "/" + magazineSize);
-        //------------------------------------------------------
+
+        UpdateUI();
+        //magazineImage.fillAmount = curAmmo / (magazineSize * 1.0f);
+        //magazineText.text = (curAmmo + "/" + magazineSize);
+   
         if (curAmmo <= 0)
         {            
             StartCoroutine("Reload");
@@ -112,31 +118,27 @@ public class WeaponScript : MonoBehaviour
     {
         isReloading = true;
 
-        //Added for slider-------------------------------------------
-        slider.gameObject.SetActive(true);
+        reloadSlider.gameObject.SetActive(true);
+        reloadSlider.animator.speed = 1 / reloadTime;
+        reloadSlider.animator.Play("ReloadAnimation");
 
-        /*
-        for (int i = 0; i < 100; i++)
-        {
-            slider.value = i / 100f;
-            Debug.Log(i/100);
-            yield return new WaitForSeconds(reloadTime/100f);
-        }
-        */
-        slider.animator.speed = 1 / reloadTime;
-        slider.animator.Play("ReloadAnimation");
-        //------------------------------------------------------
         yield return new WaitForSeconds(reloadTime);
 
-        //Added for slider-------------------------------------------
-        slider.gameObject.SetActive(false);
-        //------------------------------------------------------
         curAmmo = magazineSize;
-        //Added for Magazine------------------------------------
-        magazineImage.fillAmount = 1;
-        magazineText.text = (curAmmo + "/" + magazineSize);
-        //------------------------------------------------------
+
+        reloadSlider.gameObject.SetActive(false);
+
+
+        UpdateUI();
+        //magazineImage.fillAmount = 1;
+
+
         isReloading = false;
+    }
+
+    public void UpdateUI()
+    {
+        ammoText.text = curAmmo + "/" + magazineSize;
     }
 
 }
