@@ -23,16 +23,16 @@ public class WeaponPickupScript : MonoBehaviour
         isReady = false;
         player = GameObject.FindGameObjectWithTag("Player");
         playerScript = player.GetComponent<PlayerScript>();
-        Invoke("Ready", 0.5f);
+        Invoke("Ready", 0.7f);
     }
 
     // Update is called once per frame
     void Update()
     {
         float distanceToTarget = (player.transform.position - transform.position).magnitude;
-        if (Input.GetButton("Use") && distanceToTarget < activationRadius && isReady && !playerScript.ws.isReloading)
-        {
-            playerScript.PickupWeapon(weaponPrefab);
+        if (Input.GetButton("Use") && distanceToTarget < activationRadius && isReady && !playerScript.ws.isReloading )
+        {    
+            playerScript.PickupWeapon(weaponPrefab);     
             Destroy(gameObject);
             //gameObject.SetActive(false);
         }

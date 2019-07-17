@@ -110,6 +110,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 442b074384ae99543ad5a4ddf0766335,
         type: 3}
+    - target: {fileID: 6712601010686981716, guid: 6b8bb236d914b64458df88aac1953ee1,
+        type: 3}
+      propertyPath: playerKnockback
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6712601010686981716, guid: 6b8bb236d914b64458df88aac1953ee1,
+        type: 3}
+      propertyPath: bulletSpeed
+      value: 22
+      objectReference: {fileID: 0}
     - target: {fileID: 6712601010686981717, guid: 6b8bb236d914b64458df88aac1953ee1,
         type: 3}
       propertyPath: m_audioClip

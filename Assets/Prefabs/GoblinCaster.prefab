@@ -100,7 +100,7 @@ MonoBehaviour:
     type: 3}
   fireballPrefab: {fileID: 4367586918675199131, guid: d64b6dec2afca684fa6b2c0ec2056310,
     type: 3}
-  MaxHP: 2
+  MaxHP: 3
   damage: 1
   speed: 2
   attackRange: 5.7

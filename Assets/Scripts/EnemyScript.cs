@@ -37,6 +37,8 @@ public class EnemyScript : MonoBehaviour
 
     private bool isAttacking;
 
+    private Vector2 impactVector;
+
     public Vector2 hitDirection;
 
     public Material blinkingMat;
@@ -99,11 +101,15 @@ public class EnemyScript : MonoBehaviour
         {
             animator.SetFloat("MovementDir", 0f);
         }
-        float distanceToTarget = (target.transform.position - transform.position).magnitude;
-        if (distanceToTarget < attackRange && !isAttacking)
+        if (target != null)
         {
-            StartCoroutine("Attack");
+            float distanceToTarget = (target.transform.position - transform.position).magnitude;
+            if (distanceToTarget < attackRange && !isAttacking)
+            {               
+                StartCoroutine("Attack");
+            }
         }
+
     }
 
 
@@ -209,8 +215,11 @@ public class EnemyScript : MonoBehaviour
             }
             movementPoint = (Vector2)target.transform.position + movementPointOffset;        
             movementDir = (movementPoint - (Vector2)transform.position).normalized;
+            Vector2 resultVector = movementDir * speed + impactVector;
+            //impactVector = Vector2.zero;
             //movementDir = ((Vector2)target.transform.position+offset - (Vector2)transform.position).normalized;
-            rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);                   
+            //rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);                   
+            rb2d.MovePosition(rb2d.position + resultVector * Time.fixedDeltaTime);                   
         }
 
         //Debug.DrawRay(transform.position, movementDir* ((Vector2)target.transform.position + offset - (Vector2)transform.position).magnitude);
@@ -225,9 +234,20 @@ public class EnemyScript : MonoBehaviour
         }       
     }
 
-    public void HandleDamage(float damage)
+    public void HandleDamage(float damage, Vector2 hitDirection)
     {
         HP -= damage;
+        this.hitDirection = hitDirection;
+        if (HP <= 0)
+        {
+            Death();
+            return;
+        }
+        //Knockback
+        CancelInvoke("ResetImpactVector");
+        impactVector = hitDirection * 6f;
+        Invoke("ResetImpactVector",0.1f);
+
         if (!isBlinking)
         {
             StartCoroutine("Blink");
@@ -235,10 +255,12 @@ public class EnemyScript : MonoBehaviour
         canvas.SetActive(true);
         hpBar.fillAmount = HP / MaxHP;
 
-        if (HP <= 0)
-        {
-            Death();
-        }
+ 
+    }
+
+    private void ResetImpactVector()
+    {
+        impactVector = Vector2.zero;
     }
 
     IEnumerator Blink()

@@ -24,6 +24,8 @@ public class GoblinDeath : MonoBehaviour
 
     private float count = 0.0f;
 
+    //private float time;
+
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -32,6 +34,8 @@ public class GoblinDeath : MonoBehaviour
         endPoint = startPoint + direction * 1.5f;
         sr.material = blinkingMat;
         Invoke("SetDefaultMat",blinkDuration);
+        Invoke("StartDissolve", 45f);      
+       
     }
 
    void SetDefaultMat()
@@ -39,6 +43,24 @@ public class GoblinDeath : MonoBehaviour
         sr.material = defaultMat;
     }
     
+    public void StartDissolve()
+    {
+        StartCoroutine("Dissolve");   
+    }
+
+
+    IEnumerator Dissolve()
+    {
+        CancelInvoke("StartDissolve");
+        float time = 0f;
+        while (time < 3)
+        {
+            time = time + Time.deltaTime;
+            sr.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, time/0.8f));
+            yield return null;
+        }
+        Destroy(gameObject);
+    }
 
     void Update()
     {
@@ -50,7 +72,6 @@ public class GoblinDeath : MonoBehaviour
         {
             sr.flipX = true;
         }
-
 
         if (count < 1.0f)
         {

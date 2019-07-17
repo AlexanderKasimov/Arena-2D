@@ -13,7 +13,7 @@ public class WeaponScript : MonoBehaviour
 
     public GameObject pickupPrefab;
 
-    private Vector2 direction;
+    public Vector2 direction;
 
     //Euler angle +-
     public float maxInaccuracyAngle = 10f;
@@ -32,6 +32,10 @@ public class WeaponScript : MonoBehaviour
     //in sec
     public float reloadTime = 1f;
 
+    public float bulletSpeed = 20f;
+
+    public float playerKnockback = 3f;
+
     private int curAmmo;
 
 
@@ -46,6 +50,8 @@ public class WeaponScript : MonoBehaviour
 
 
     private AudioSource fireSound;
+
+    public bool isReady;
     // Start is called before the first frame update
     void Start()
     {
@@ -60,7 +66,13 @@ public class WeaponScript : MonoBehaviour
         //magazineText.text = (curAmmo + "/" + magazineSize);        
 
         fireSound = GetComponent<AudioSource>();
-        
+        isReady = false;
+        Invoke("SetReady", 0.1f);
+    }
+
+    private void SetReady()
+    {
+        isReady = true;
     }
 
     // Update is called once per frame
@@ -86,30 +98,31 @@ public class WeaponScript : MonoBehaviour
         {
             return;
         }
+   
         curAmmo--;
 
         UpdateUI();
         //magazineImage.fillAmount = curAmmo / (magazineSize * 1.0f);
         //magazineText.text = (curAmmo + "/" + magazineSize);
-   
-        if (curAmmo <= 0)
-        {            
-            StartCoroutine("Reload");
-            return;
-        }        
+ 
 
-        //Debug.Log(curAmmo);
         GameObject bullet = Instantiate(bulletPrefab, muzzle.transform.position, Quaternion.Euler(0, 0, 0));
         BulletScript bs = bullet.GetComponent<BulletScript>();
         bs.damage = damage;
+        bs.speed = bulletSpeed;
         Vector2 spreadDir = direction;
         float angle = Random.Range(-maxInaccuracyAngle*(1/accuracy), maxInaccuracyAngle*(1 / accuracy)) * Mathf.Deg2Rad;
         spreadDir.x = direction.x * Mathf.Cos(angle) - direction.y * Mathf.Sin(angle);
         spreadDir.y = direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle);
 
-        bs.movementDir = spreadDir;
-
+        bs.movementDir = spreadDir;      
         fireSound.Play();
+ 
+        if (curAmmo <= 0)
+        {
+            StartCoroutine("Reload");
+            return;
+        }
     }
 
 

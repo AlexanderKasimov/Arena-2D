@@ -130,6 +130,7 @@ MonoBehaviour:
   weaponImageSprite: {fileID: 21300000, guid: e91c5302d372a854b9cc763b48ad002d, type: 3}
   pickupPrefab: {fileID: 7226914591828621952, guid: af2927cf22a26e34aa012b1e96a21b33,
     type: 3}
+  direction: {x: 0, y: 0}
   maxInaccuracyAngle: 10
   isReloading: 0
   rateOfFire: 120
@@ -137,9 +138,12 @@ MonoBehaviour:
   damage: 3
   magazineSize: 6
   reloadTime: 0.7
+  bulletSpeed: 20
+  playerKnockback: 1
   ammoText: {fileID: 0}
   weaponImage: {fileID: 0}
   reloadSlider: {fileID: 0}
+  isReady: 0
 --- !u!82 &6712601010686981717
 AudioSource:
   m_ObjectHideFlags: 0

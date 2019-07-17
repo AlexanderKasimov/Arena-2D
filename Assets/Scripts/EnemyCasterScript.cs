@@ -85,11 +85,15 @@ public class EnemyCasterScript : MonoBehaviour
         {
             animator.SetFloat("MovementDir", 0f);
         }
-        float distanceToTarget = (target.transform.position - transform.position).magnitude;
-        if (distanceToTarget < attackRange && !isAttacking)
+        if (target != null)
         {
-            StartCoroutine("Attack");
+            float distanceToTarget = (target.transform.position - transform.position).magnitude;
+            if (distanceToTarget < attackRange && !isAttacking)
+            {
+                StartCoroutine("Attack");
+            }
         }
+
 
     }
 

@@ -110,5 +110,10 @@ PrefabInstance:
       propertyPath: damage
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6712601010686981716, guid: 6b8bb236d914b64458df88aac1953ee1,
+        type: 3}
+      propertyPath: playerKnockback
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b8bb236d914b64458df88aac1953ee1, type: 3}

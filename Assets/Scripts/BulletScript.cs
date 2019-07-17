@@ -12,9 +12,12 @@ public class BulletScript : MonoBehaviour
 
     public float damage = 1f;
 
+    private bool collided; 
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        collided = false;
     }
     // Start is called before the first frame update
     void Start()
@@ -33,30 +36,40 @@ public class BulletScript : MonoBehaviour
         rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //Debug.Log(collision.gameObject);
-        collision.gameObject.GetComponent<EnemyScript>().HandleDamage(damage);         
-        Destroy(gameObject);
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    //Debug.Log(collision.gameObject);
+    //    collision.gameObject.GetComponent<EnemyScript>().HandleDamage(damage);         
+    //    Destroy(gameObject);
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Debug.Log("Damage");       
         EnemyScript enemyScript = collision.gameObject.GetComponent<EnemyScript>();
         if (enemyScript != null)
         {
-            enemyScript.hitDirection = movementDir;
-            enemyScript.HandleDamage(damage);
-            Destroy(gameObject);
+           if (!collided)
+            {
+                collided = true;
+                //enemyScript.hitDirection = movementDir;
+                enemyScript.HandleDamage(damage, movementDir);
+                Destroy(gameObject);
+            }
+
         }
         else
         {
             EnemyCasterScript enemyCasterScript = collision.gameObject.GetComponent<EnemyCasterScript>();
             if (enemyCasterScript != null)
             {
-                enemyCasterScript.hitDirection = movementDir;
-                enemyCasterScript.HandleDamage(damage);
-                Destroy(gameObject);
+                if (!collided)
+                {
+                    collided = true;
+                    enemyCasterScript.hitDirection = movementDir;
+                    enemyCasterScript.HandleDamage(damage);
+                    Destroy(gameObject);
+                }
             }
         }   
     }

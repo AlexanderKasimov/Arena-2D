@@ -81,6 +81,12 @@ public class WaveManager : MonoBehaviour
         {
             awardScript.SpawnWeaponPickup(waveNumber);
         }
+
+        GoblinDeath[] deathObjects = FindObjectsOfType<GoblinDeath>();
+        foreach (var item in deathObjects)
+        {
+            item.StartDissolve();
+        }
         //switch (waveNumber)
         //{
         //   case 2:

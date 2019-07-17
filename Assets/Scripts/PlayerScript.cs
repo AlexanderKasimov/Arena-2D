@@ -56,6 +56,10 @@ public class PlayerScript : MonoBehaviour
 
     public GameObject weaponPickupPlace;
 
+    private Vector2 knockbackVector;
+
+    private bool isInvulnerable; 
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -68,10 +72,13 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        timeSinceFire = ws.rateOfFire;
+        //Debug.Log(sr.color);
+        //sr.color = new Color(1, 1, 1, 1);
+
+        timeSinceFire = 60f / ws.rateOfFire;
         HP = MaxHP;
         UpdateUI();
+        isInvulnerable = false;
         //WeaponInit;
         reloadSlider.gameObject.SetActive(false);
         ws.reloadSlider = reloadSlider;
@@ -96,20 +103,33 @@ public class PlayerScript : MonoBehaviour
         animator.SetFloat("MovementDir", movementDir.magnitude);
 
         timeSinceFire = timeSinceFire + Time.deltaTime;
-
-        if (Input.GetButton("Fire1") && /*ws != null &&*/ timeSinceFire > 60f/ws.rateOfFire && !ws.isReloading)
+     
+        if (Input.GetButton("Fire1") && /*ws != null &&*/  ws.isReady && timeSinceFire > 60f/ws.rateOfFire && !ws.isReloading)
         {       
             ws.Fire();
-            //Debug.Log("Fired");          
+            //KnockBack - мб лучше в ws?
+            CancelInvoke("ResetKnockbackVector");
+            knockbackVector = -1f *ws.direction * ws.playerKnockback;
+            Invoke("ResetKnockbackVector", 0.1f);
+
             timeSinceFire = 0.0f;
         }
     }
 
+    private void ResetKnockbackVector()
+    {
+        knockbackVector = Vector2.zero;
+    }
+
+
     private void FixedUpdate()
-    { 
+    {
 
         //Move player
-        rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
+        Vector2 resultVector = movementDir * speed + knockbackVector;
+
+        //rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
+        rb2d.MovePosition(rb2d.position + resultVector * Time.fixedDeltaTime);
 
         Vector2 mousePosition = Input.mousePosition;
 
@@ -148,10 +168,11 @@ public class PlayerScript : MonoBehaviour
     public void PickupWeapon(GameObject weaponPrefab)
     {
         Instantiate(ws.pickupPrefab, weaponPickupPlace.transform.position, Quaternion.Euler(0f, 0f, 0f));
-        GameObject newWeapon = Instantiate(weaponPrefab, weaponSocket.transform);
+        GameObject newWeapon = Instantiate(weaponPrefab, weaponSocket.transform);     
         Destroy(weapon.gameObject);
         weapon = newWeapon;
         ws = weapon.GetComponent<WeaponScript>();
+        timeSinceFire = 60f / ws.rateOfFire;
         ws.reloadSlider = reloadSlider;
         ws.weaponImage = weaponImage;
         ws.ammoText = ammoText;
@@ -176,21 +197,43 @@ public class PlayerScript : MonoBehaviour
 
     public void HandleDamage(float damage)
     {
-        HP -= damage;
-
-        //Added----------------------------------
-        UpdateUI();
-        //---------------------------------------
-        if (!isBlinking)
+        if (!isInvulnerable)
         {
-            StartCoroutine("Blink");
+            HP -= damage;
+            UpdateUI();
+            if (HP <= 0)
+            {
+                Death();
+                return;
+            }
+            isInvulnerable = true;
+            Invoke("EndInvulnerable", 1.2f);
+
+            //Hit VFX
+
+
+
+            //sr.color = new Color(1, 1, 1, 0);
+
+            //Added----------------------------------
+
+            //---------------------------------------
+            if (!isBlinking)
+            {
+                StartCoroutine("Blink");
+            }
+
         }
 
-        if (HP <= 0)
-        {
-            Death();
-        }
     }
+
+    private void EndInvulnerable()
+    {
+        isInvulnerable = false;
+        StopCoroutine("InvulnerableBlink");
+        sr.color = new Color(1, 1, 1, 1);
+    }
+
 
     IEnumerator Blink()
     {
@@ -199,14 +242,29 @@ public class PlayerScript : MonoBehaviour
         yield return new WaitForSeconds(blinkDuration);
         sr.material = defaultMat;
         isBlinking = false;
+        StartCoroutine("InvulnerableBlink");
     }
+
+    IEnumerator InvulnerableBlink()
+    {
+        while (true)
+        {
+            sr.color = new Color(1, 1, 1, 0);
+            yield return new WaitForSeconds(0.1f);
+            sr.color = new Color(1, 1, 1, 1);
+            yield return new WaitForSeconds(0.1f);
+        }
+     
+    }
+
 
     private void Death()
     {
+        Debug.Log("Death");
         Invoke("Restart", 2f);
         GoblinDeath goblinDeath = Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<GoblinDeath>();
         goblinDeath.direction = hitDirection;
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); 
 
         // Destroy(gameObject);
     }
