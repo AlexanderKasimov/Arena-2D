@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 301082922173273024, guid: 3e363b40535245340881033b907ced98,
         type: 3}
       propertyPath: m_Name
-      value: Cowboy_Caster_death Variant
+      value: Cowboy_death Variant
       objectReference: {fileID: 0}
     - target: {fileID: 301082922173273027, guid: 3e363b40535245340881033b907ced98,
         type: 3}
@@ -71,6 +71,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: a665adc4189485a439b9bb1fca56af93, type: 2}
+      objectReference: {fileID: 9100000, guid: 3fbdd351bba765b4db675c76eec24878, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e363b40535245340881033b907ced98, type: 3}

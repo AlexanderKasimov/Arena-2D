@@ -53706,6 +53706,12 @@ PrefabInstance:
       propertyPath: weaponPickupPlace
       value: 
       objectReference: {fileID: 1632036344}
+    - target: {fileID: 5035529408999232328, guid: ddee542268a158f45857e819d57deda5,
+        type: 3}
+      propertyPath: deathObject
+      value: 
+      objectReference: {fileID: 6223142258552531093, guid: 4cfea90422ca6f241a6ec43250f3f9f6,
+        type: 3}
     - target: {fileID: 1785176273668762130, guid: ddee542268a158f45857e819d57deda5,
         type: 3}
       propertyPath: weaponImageSprite
