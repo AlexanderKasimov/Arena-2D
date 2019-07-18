@@ -56,6 +56,9 @@ public class EnemyCasterScript : MonoBehaviour
     private Vector2 movementPointOffset;
 
 
+    private Vector2 impactVector;
+
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -94,7 +97,6 @@ public class EnemyCasterScript : MonoBehaviour
             }
         }
 
-
     }
 
     private void GenerateMovementPointOffset()
@@ -123,18 +125,22 @@ public class EnemyCasterScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Перенести в корутину        
+             
         if (!isAttacking)
-        {
-            //float distanceToTarget = (target.transform.position - transform.position).magnitude;
-
-            //movementDir = ((Vector2)target.transform.position+offset - (Vector2)transform.position).normalized;
+        {      
             movementPoint = (Vector2)target.transform.position + movementPointOffset;
             movementDir = (movementPoint - (Vector2)transform.position).normalized;
-            rb2d.MovePosition(rb2d.position + movementDir * speed * Time.fixedDeltaTime);
+
+            Vector2 resultVector = movementDir * speed + impactVector;            
+            rb2d.MovePosition(rb2d.position + resultVector * Time.fixedDeltaTime);
         }
-        //movementDir = (target.transform.position - transform.position).normalized;
-        //Debug.DrawRay(transform.position, movementDir* ((Vector2)target.transform.position + offset - (Vector2)transform.position).magnitude);
+        else
+        {
+            Vector2 resultVector = impactVector;                       
+            rb2d.MovePosition(rb2d.position + resultVector * Time.fixedDeltaTime);
+        }
+
+
         //Sprite Rotation
         if (movementDir.x < 0)
         {
@@ -147,9 +153,19 @@ public class EnemyCasterScript : MonoBehaviour
 
     }
 
-    public void HandleDamage(float damage)
+    public void HandleDamage(float damage, Vector2 hitDirection)
     {
         HP -= damage;
+        this.hitDirection = hitDirection;
+        if (HP <= 0)
+        {
+            Death();
+            return;
+        }
+        //Knockback
+        CancelInvoke("ResetImpactVector");
+        impactVector = hitDirection * 6f;
+        Invoke("ResetImpactVector", 0.1f);
 
         if (!isBlinking)
         {
@@ -158,10 +174,12 @@ public class EnemyCasterScript : MonoBehaviour
         canvas.SetActive(true);
         hpBar.fillAmount = HP / MaxHP;
 
-        if (HP <= 0)
-        {
-            Death();
-        }
+
+    }
+
+    private void ResetImpactVector()
+    {
+        impactVector = Vector2.zero;
     }
 
     IEnumerator Blink()

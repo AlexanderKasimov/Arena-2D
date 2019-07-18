@@ -20,6 +20,10 @@ public class WaveManager : MonoBehaviour
 
     public GameObject waveActivatorObject;
 
+    public GameObject waveInfoObject;
+
+    public Image waveProgressBar;
+
     public Text waveText;
 
     public GameObject awardScriptObject;
@@ -55,8 +59,10 @@ public class WaveManager : MonoBehaviour
         }
         waveNumber++;
         waveText.text = "Wave " + waveNumber;
-        InvokeRepeating("CheckEndWave",1f,1f);
+        InvokeRepeating("CheckEndWave",0.1f,1f);
         awardScript.DestroyPickups();
+        waveInfoObject.SetActive(true);
+        UpdateUI();
     }
 
     public void CheckEndWave()
@@ -70,6 +76,7 @@ public class WaveManager : MonoBehaviour
         {
             EndWave();
         }
+        UpdateUI();
     }
 
     private void EndWave()
@@ -87,6 +94,8 @@ public class WaveManager : MonoBehaviour
         {
             item.StartDissolve();
         }
+
+        waveInfoObject.SetActive(false);
         //switch (waveNumber)
         //{
         //   case 2:
@@ -99,10 +108,16 @@ public class WaveManager : MonoBehaviour
         //}
     }
 
+    private void UpdateUI()
+    {
+        //Debug.Log(curSpawnsInWave + " " + totalSpawnsInWave + " " + curSpawnsInWave / totalSpawnsInWave);
+        waveProgressBar.fillAmount =1f * curSpawnsInWave / totalSpawnsInWave;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+     
     }
 
     private void Reset()

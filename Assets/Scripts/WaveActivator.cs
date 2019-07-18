@@ -12,6 +12,7 @@ public class WaveActivator : MonoBehaviour
 
     private WaveManager waveManager;
 
+    public GameObject useButtonObject;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,16 @@ public class WaveActivator : MonoBehaviour
             waveManager.StartWave();
             gameObject.SetActive(false);
         }
+
+        if (distanceToTarget < activationRadius)
+        {
+            useButtonObject.SetActive(true);
+        }
+        else
+        {
+            useButtonObject.SetActive(false);
+        }
+
     }
 
     private void OnDrawGizmos()

@@ -16,6 +16,8 @@ public class HealthPickup : MonoBehaviour
 
     private WaveManager waveManager;
 
+    public GameObject useButtonObject;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +36,15 @@ public class HealthPickup : MonoBehaviour
             Destroy(gameObject);
             //gameObject.SetActive(false);
         }
+        if (distanceToTarget < activationRadius)
+        {
+            useButtonObject.SetActive(true);
+        }
+        else
+        {
+            useButtonObject.SetActive(false);
+        }
+
     }
 
     private void OnDrawGizmos()

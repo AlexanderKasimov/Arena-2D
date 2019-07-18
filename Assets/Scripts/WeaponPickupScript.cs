@@ -17,6 +17,8 @@ public class WeaponPickupScript : MonoBehaviour
 
     private bool isReady;
 
+    public GameObject useButtonObject;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,16 @@ public class WeaponPickupScript : MonoBehaviour
             Destroy(gameObject);
             //gameObject.SetActive(false);
         }
+
+        if (distanceToTarget < activationRadius && isReady)
+        {
+            useButtonObject.SetActive(true);
+        }
+        else
+        {
+            useButtonObject.SetActive(false);
+        }
+
     }
 
     private void OnDrawGizmos()

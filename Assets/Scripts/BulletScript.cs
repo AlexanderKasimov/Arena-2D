@@ -12,7 +12,9 @@ public class BulletScript : MonoBehaviour
 
     public float damage = 1f;
 
-    private bool collided; 
+    private bool collided;
+
+    public GameObject hitEffectPrefab;
 
     private void Awake()
     {
@@ -53,6 +55,7 @@ public class BulletScript : MonoBehaviour
             {
                 collided = true;
                 //enemyScript.hitDirection = movementDir;
+                Instantiate(hitEffectPrefab, (Vector2)transform.position + movementDir * 0.4f, Quaternion.Euler(new Vector3(0, 0, Vector2.SignedAngle(new Vector2(1, 0), movementDir))));
                 enemyScript.HandleDamage(damage, movementDir);
                 Destroy(gameObject);
             }
@@ -66,8 +69,9 @@ public class BulletScript : MonoBehaviour
                 if (!collided)
                 {
                     collided = true;
-                    enemyCasterScript.hitDirection = movementDir;
-                    enemyCasterScript.HandleDamage(damage);
+                    Instantiate(hitEffectPrefab, (Vector2)transform.position + movementDir * 0.4f, Quaternion.Euler(new Vector3(0, 0, Vector2.SignedAngle(new Vector2(1, 0), movementDir))));
+                    //enemyCasterScript.hitDirection = movementDir;
+                    enemyCasterScript.HandleDamage(damage, movementDir);
                     Destroy(gameObject);
                 }
             }

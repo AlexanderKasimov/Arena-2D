@@ -14,6 +14,8 @@ public class AwardScript : MonoBehaviour
 
     public GameObject weaponPickupPrefab_2;
 
+    public GameObject standObject;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +29,7 @@ public class AwardScript : MonoBehaviour
 
 
     public void SpawnWeaponPickup(int waveNumber)
-    {
+    {        
         switch (waveNumber)
         {
             case 2:
@@ -39,7 +41,7 @@ public class AwardScript : MonoBehaviour
             default:
                 break;
         }
-
+        standObject.SetActive(true);
 
     }
 
@@ -57,7 +59,7 @@ public class AwardScript : MonoBehaviour
         {
             Destroy(item.gameObject);
         }
-
+        standObject.SetActive(false);
     }
 
 
