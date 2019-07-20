@@ -67,11 +67,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 681e91cdef78435418731d6806ebd7e9, type: 3}
-    m_FontSize: 24
+    m_FontSize: 65
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
-    m_MaxSize: 40
+    m_MaxSize: 65
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -115,8 +115,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 92.45001, y: 9.500005}
-  m_SizeDelta: {x: 97.26999, y: 30}
+  m_AnchoredPosition: {x: 245.49, y: 22.7}
+  m_SizeDelta: {x: 260.59, y: 73.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4234894149636503004
 CanvasRenderer:
@@ -198,7 +198,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4234894149128042197}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 76560135}
+        m_MethodName: OnStart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &4234894149814576972
@@ -237,8 +248,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 82.4, y: -20.3}
-  m_SizeDelta: {x: 77.17, y: 30}
+  m_AnchoredPosition: {x: 210.88, y: -80}
+  m_SizeDelta: {x: 236.35, y: 78.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4234894149814576960
 CanvasRenderer:
@@ -320,7 +331,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4234894150596007145}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 76560135}
+        m_MethodName: OnExit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &4234894150416993711
@@ -335,6 +357,7 @@ GameObject:
   - component: {fileID: 4234894150416993699}
   - component: {fileID: 4234894150416993698}
   - component: {fileID: 4234894150416993709}
+  - component: {fileID: 76560135}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -349,9 +372,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4234894150416993711}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4234894149636503000}
   - {fileID: 4234894149814576973}
@@ -375,7 +398,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -423,6 +446,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &76560135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4234894150416993711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b520db7ddf8fa46878f73357ec7489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4234894150596007147
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,11 +525,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 681e91cdef78435418731d6806ebd7e9, type: 3}
-    m_FontSize: 24
+    m_FontSize: 65
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
-    m_MaxSize: 40
+    m_MaxSize: 65
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1

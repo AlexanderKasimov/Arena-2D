@@ -82,7 +82,13 @@ public class WaveManager : MonoBehaviour
     private void EndWave()
     {
         CancelInvoke("CheckEndWave");
-        waveActivatorObject.SetActive(true);
+    
+
+        GameObject waveActivator = Instantiate(waveActivatorObject, transform);
+        waveActivator.GetComponent<WaveActivator>().waveManagerObject = gameObject;
+        
+        //waveActivatorObject.SetActive(true);
+        //waveActivatorObject.GetComponent<Animator>().enabled = false;
         awardScript.SpawnHealthPickup();
         if (waveNumber % 2 == 0)
         {

@@ -58,7 +58,9 @@ public class PlayerScript : MonoBehaviour
 
     private Vector2 knockbackVector;
 
-    private bool isInvulnerable; 
+    private bool isInvulnerable;
+
+    public GameObject pauseMenuObject;
 
     private void Awake()
     {
@@ -104,7 +106,7 @@ public class PlayerScript : MonoBehaviour
 
         timeSinceFire = timeSinceFire + Time.deltaTime;
      
-        if (Input.GetButton("Fire1") && /*ws != null &&*/  ws.isReady && timeSinceFire > 60f/ws.rateOfFire && !ws.isReloading)
+        if (Input.GetButton("Fire1") && /*ws != null &&*/  ws.isReady && timeSinceFire > 60f/ws.rateOfFire && !ws.isReloading && !pauseMenuObject.GetComponent<PauseMenu>().isPaused)
         {       
             ws.Fire();
             //KnockBack - мб лучше в ws?

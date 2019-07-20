@@ -14,24 +14,36 @@ public class WaveActivator : MonoBehaviour
 
     public GameObject useButtonObject;
 
+    private Animator animator;
+
+    private bool isReady;
+
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         waveManager = waveManagerObject.GetComponent<WaveManager>();
+        animator = GetComponent<Animator>();
+        isReady = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         float distanceToTarget = (player.transform.position - transform.position).magnitude;
-        if (Input.GetButton("Use") && distanceToTarget < activationRadius)
+        if (Input.GetButton("Use") && distanceToTarget < activationRadius && isReady)
         {
-            waveManager.StartWave();
-            gameObject.SetActive(false);
+            if (waveManager.waveNumber == 5)
+            {
+                Debug.Log("End");
+            }
+
+            isReady = false;
+            animator.enabled = true;   
+            Invoke("StartWave", 2f);           
         }
 
-        if (distanceToTarget < activationRadius)
+        if (distanceToTarget < activationRadius && isReady)
         {
             useButtonObject.SetActive(true);
         }
@@ -41,6 +53,13 @@ public class WaveActivator : MonoBehaviour
         }
 
     }
+
+    private void StartWave()
+    {
+        waveManager.StartWave();
+        Destroy(gameObject);   
+    }
+
 
     private void OnDrawGizmos()
     {
