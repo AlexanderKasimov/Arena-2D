@@ -51,7 +51,11 @@ public class WeaponScript : MonoBehaviour
 
     private AudioSource fireSound;
 
+    public bool isShotgun = false;
+
     public bool isReady;
+
+    public int bulletCountInShell = 5;
     // Start is called before the first frame update
     void Start()
     {
@@ -104,18 +108,39 @@ public class WeaponScript : MonoBehaviour
         UpdateUI();
         //magazineImage.fillAmount = curAmmo / (magazineSize * 1.0f);
         //magazineText.text = (curAmmo + "/" + magazineSize);
+        if (isShotgun)
+        {
+            for (int i = 0; i < bulletCountInShell; i++)
+            {
+                GameObject bullet = Instantiate(bulletPrefab, muzzle.transform.position, Quaternion.Euler(0, 0, 0));
+                BulletScript bs = bullet.GetComponent<BulletScript>();
+                bs.damage = damage;
+                bs.speed = bulletSpeed;
+                Vector2 spreadDir = direction;
+                float angle = Random.Range(-maxInaccuracyAngle * (1 / accuracy), maxInaccuracyAngle * (1 / accuracy)) * Mathf.Deg2Rad;
+                spreadDir.x = direction.x * Mathf.Cos(angle) - direction.y * Mathf.Sin(angle);
+                spreadDir.y = direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle);
+
+                bs.movementDir = spreadDir;
+            }
+      
+        }
+        else
+        {
+            GameObject bullet = Instantiate(bulletPrefab, muzzle.transform.position, Quaternion.Euler(0, 0, 0));
+            BulletScript bs = bullet.GetComponent<BulletScript>();
+            bs.damage = damage;
+            bs.speed = bulletSpeed;
+            Vector2 spreadDir = direction;
+            float angle = Random.Range(-maxInaccuracyAngle * (1 / accuracy), maxInaccuracyAngle * (1 / accuracy)) * Mathf.Deg2Rad;
+            spreadDir.x = direction.x * Mathf.Cos(angle) - direction.y * Mathf.Sin(angle);
+            spreadDir.y = direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle);
+
+            bs.movementDir = spreadDir;
+        }
  
 
-        GameObject bullet = Instantiate(bulletPrefab, muzzle.transform.position, Quaternion.Euler(0, 0, 0));
-        BulletScript bs = bullet.GetComponent<BulletScript>();
-        bs.damage = damage;
-        bs.speed = bulletSpeed;
-        Vector2 spreadDir = direction;
-        float angle = Random.Range(-maxInaccuracyAngle*(1/accuracy), maxInaccuracyAngle*(1 / accuracy)) * Mathf.Deg2Rad;
-        spreadDir.x = direction.x * Mathf.Cos(angle) - direction.y * Mathf.Sin(angle);
-        spreadDir.y = direction.x * Mathf.Sin(angle) + direction.y * Mathf.Cos(angle);
 
-        bs.movementDir = spreadDir;      
         fireSound.Play();
  
         if (curAmmo <= 0)

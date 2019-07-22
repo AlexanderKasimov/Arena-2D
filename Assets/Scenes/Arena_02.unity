@@ -870,7 +870,7 @@ MonoBehaviour:
   healthPickupPrefab: {fileID: 5184611262100429302, guid: c315de6b849fc6845be8db653337fd04,
     type: 3}
   weaponPickupPlace: {fileID: 1632036344}
-  weaponPickupPrefab_1: {fileID: 8836712361881118885, guid: 265fd58d1a9350f40adc48e22e86a786,
+  weaponPickupPrefab_1: {fileID: 5858468336950044897, guid: 4c7fdf112b96c904fae238e67ceee82b,
     type: 3}
   weaponPickupPrefab_2: {fileID: 1583146885716600792, guid: 05c4e947556b348409b51d6ab644e951,
     type: 3}
@@ -4608,6 +4608,80 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &166091922
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1632036345}
+    m_Modifications:
+    - target: {fileID: 5858468336950044897, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_Name
+      value: WeaponPickup_Shotgun
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044897, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4c7fdf112b96c904fae238e67ceee82b, type: 3}
 --- !u!1 &171972412
 GameObject:
   m_ObjectHideFlags: 0
@@ -13795,6 +13869,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &593463440 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5858468336950044898, guid: 4c7fdf112b96c904fae238e67ceee82b,
+    type: 3}
+  m_PrefabInstance: {fileID: 166091922}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &595467116
 GameObject:
   m_ObjectHideFlags: 0
@@ -26095,120 +26175,96 @@ MonoBehaviour:
   waveNumber: 0
   spawnerData:
   - spawnerDatas:
-    - spawns: 1
-      enemiesInSpawnMax: 10
+    - spawns: 3
+      enemiesInSpawnMax: 6
       enemiesInSpawnMin: 5
       startDelay: 2
-      timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
-      enemyType_1_Ratio: 0.8
-      enemyType_2_Ratio: 0.2
+      timeBetweenSpawnMax: 7
+      timeBetweenSpawnMin: 5
+      enemyType_1_Ratio: 1
+      enemyType_2_Ratio: 0
   - spawnerDatas:
-    - spawns: 1
-      enemiesInSpawnMax: 10
+    - spawns: 3
+      enemiesInSpawnMax: 7
       enemiesInSpawnMin: 5
-      startDelay: 3
-      timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
-      enemyType_1_Ratio: 0.8
-      enemyType_2_Ratio: 0.2
-    - spawns: 1
-      enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
-      timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
+      startDelay: 2
+      timeBetweenSpawnMax: 7
+      timeBetweenSpawnMin: 5
       enemyType_1_Ratio: 0.8
       enemyType_2_Ratio: 0.2
   - spawnerDatas:
     - spawns: 5
-      enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
-      timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
-      enemyType_1_Ratio: 0.8
-      enemyType_2_Ratio: 0.2
+      enemiesInSpawnMax: 15
+      enemiesInSpawnMin: 10
+      startDelay: 2
+      timeBetweenSpawnMax: 12
+      timeBetweenSpawnMin: 10
+      enemyType_1_Ratio: 0.9
+      enemyType_2_Ratio: 0.1
     - spawns: 5
-      enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
+      enemiesInSpawnMax: 15
+      enemiesInSpawnMin: 10
       startDelay: 3
-      timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
-      enemyType_1_Ratio: 0.8
-      enemyType_2_Ratio: 0.2
+      timeBetweenSpawnMax: 12
+      timeBetweenSpawnMin: 10
+      enemyType_1_Ratio: 0.9
+      enemyType_2_Ratio: 0.1
+  - spawnerDatas:
     - spawns: 5
-      enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
+      enemiesInSpawnMax: 15
+      enemiesInSpawnMin: 10
+      startDelay: 2
+      timeBetweenSpawnMax: 16
+      timeBetweenSpawnMin: 13
+      enemyType_1_Ratio: 0.9
+      enemyType_2_Ratio: 0.1
+    - spawns: 5
+      enemiesInSpawnMax: 15
+      enemiesInSpawnMin: 10
       startDelay: 3
       timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
-      enemyType_1_Ratio: 0.8
-      enemyType_2_Ratio: 0.2
+      timeBetweenSpawnMin: 13
+      enemyType_1_Ratio: 0.9
+      enemyType_2_Ratio: 0.1
+    - spawns: 5
+      enemiesInSpawnMax: 15
+      enemiesInSpawnMin: 10
+      startDelay: 7
+      timeBetweenSpawnMax: 15
+      timeBetweenSpawnMin: 13
+      enemyType_1_Ratio: 0.9
+      enemyType_2_Ratio: 0.1
   - spawnerDatas:
     - spawns: 5
       enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
+      enemiesInSpawnMin: 7
+      startDelay: 2
       timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
+      timeBetweenSpawnMin: 12
       enemyType_1_Ratio: 0.8
       enemyType_2_Ratio: 0.2
     - spawns: 5
       enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
+      enemiesInSpawnMin: 7
+      startDelay: 5
       timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
+      timeBetweenSpawnMin: 12
       enemyType_1_Ratio: 0.8
       enemyType_2_Ratio: 0.2
     - spawns: 5
       enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
+      enemiesInSpawnMin: 7
+      startDelay: 9
       timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
+      timeBetweenSpawnMin: 12
       enemyType_1_Ratio: 0.8
       enemyType_2_Ratio: 0.2
     - spawns: 5
       enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
+      enemiesInSpawnMin: 7
+      startDelay: 12
       timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
-      enemyType_1_Ratio: 0.8
-      enemyType_2_Ratio: 0.2
-  - spawnerDatas:
-    - spawns: 5
-      enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
-      timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
-      enemyType_1_Ratio: 0.8
-      enemyType_2_Ratio: 0.2
-    - spawns: 5
-      enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
-      timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
-      enemyType_1_Ratio: 0.8
-      enemyType_2_Ratio: 0.2
-    - spawns: 5
-      enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
-      timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
-      enemyType_1_Ratio: 0.8
-      enemyType_2_Ratio: 0.2
-    - spawns: 5
-      enemiesInSpawnMax: 10
-      enemiesInSpawnMin: 5
-      startDelay: 3
-      timeBetweenSpawnMax: 15
-      timeBetweenSpawnMin: 7
+      timeBetweenSpawnMin: 12
       enemyType_1_Ratio: 0.8
       enemyType_2_Ratio: 0.2
   spawners:
@@ -41101,6 +41157,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 162200690}
+  - {fileID: 593463440}
   m_Father: {fileID: 1922175497}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -54669,22 +54726,6 @@ PrefabInstance:
       propertyPath: pauseMenuObject
       value: 
       objectReference: {fileID: 1514634168}
-    - target: {fileID: 1785176273668762130, guid: ddee542268a158f45857e819d57deda5,
-        type: 3}
-      propertyPath: weaponImageSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: e91c5302d372a854b9cc763b48ad002d,
-        type: 3}
-    - target: {fileID: 1785176273668762130, guid: ddee542268a158f45857e819d57deda5,
-        type: 3}
-      propertyPath: damage
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1785176273668762130, guid: ddee542268a158f45857e819d57deda5,
-        type: 3}
-      propertyPath: rateOfFire
-      value: 120
-      objectReference: {fileID: 0}
     - target: {fileID: 5035529409066130231, guid: ddee542268a158f45857e819d57deda5,
         type: 3}
       propertyPath: m_Camera

@@ -65,7 +65,9 @@ public class EnemyScript : MonoBehaviour
 
     private EnemyMovementManager movementManager;
 
-    private string curRadius; 
+    private string curRadius;
+
+    private bool isDead = false;
 
 
     private void Awake()
@@ -240,6 +242,11 @@ public class EnemyScript : MonoBehaviour
         this.hitDirection = hitDirection;
         if (HP <= 0)
         {
+            if (isDead)
+            {
+                return;
+            }
+            isDead = true;
             Death();
             return;
         }

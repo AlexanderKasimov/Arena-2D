@@ -212,10 +212,10 @@ MonoBehaviour:
     type: 3}
   MaxHP: 3
   damage: 1
-  speed: 2
+  speed: 2.2
   attackRange: 0.5
-  delayBeforeAttack: 0.3
-  delayAfterAttack: 0.5
+  delayBeforeAttack: 0.2
+  delayAfterAttack: 0.4
   hitDirection: {x: 0, y: 0}
   blinkingMat: {fileID: 2100000, guid: ee336a18997545d44b11d36ae0f6a7bd, type: 2}
   blinkDuration: 0.2

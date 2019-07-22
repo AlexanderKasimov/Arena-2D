@@ -58,6 +58,8 @@ public class EnemyCasterScript : MonoBehaviour
 
     private Vector2 impactVector;
 
+    private bool isDead = false;
+
 
     private void Awake()
     {
@@ -159,6 +161,11 @@ public class EnemyCasterScript : MonoBehaviour
         this.hitDirection = hitDirection;
         if (HP <= 0)
         {
+            if (isDead)
+            {
+                return;
+            }
+            isDead = true;
             Death();
             return;
         }

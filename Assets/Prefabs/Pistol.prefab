@@ -133,17 +133,19 @@ MonoBehaviour:
   direction: {x: 0, y: 0}
   maxInaccuracyAngle: 10
   isReloading: 0
-  rateOfFire: 120
+  rateOfFire: 160
   accuracy: 3
-  damage: 3
-  magazineSize: 6
+  damage: 1
+  magazineSize: 12
   reloadTime: 0.7
   bulletSpeed: 20
   playerKnockback: 1
   ammoText: {fileID: 0}
   weaponImage: {fileID: 0}
   reloadSlider: {fileID: 0}
+  isShotgun: 0
   isReady: 0
+  bulletCountInShell: 5
 --- !u!82 &6712601010686981717
 AudioSource:
   m_ObjectHideFlags: 0
