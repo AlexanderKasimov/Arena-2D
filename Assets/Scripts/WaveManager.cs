@@ -30,6 +30,8 @@ public class WaveManager : MonoBehaviour
 
     private AwardScript awardScript;
 
+    public GameObject winScreenUIObject;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -86,7 +88,11 @@ public class WaveManager : MonoBehaviour
 
         GameObject waveActivator = Instantiate(waveActivatorObject, transform);
         waveActivator.GetComponent<WaveActivator>().waveManagerObject = gameObject;
-        
+        waveActivator.GetComponent<WaveActivator>().winScreenUIObject = winScreenUIObject;
+
+        PlayerScript player = FindObjectOfType<PlayerScript>();
+        player.waveActivator = waveActivator.GetComponent<WaveActivator>();
+
         //waveActivatorObject.SetActive(true);
         //waveActivatorObject.GetComponent<Animator>().enabled = false;
         awardScript.SpawnHealthPickup();

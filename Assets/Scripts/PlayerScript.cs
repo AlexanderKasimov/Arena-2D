@@ -62,6 +62,12 @@ public class PlayerScript : MonoBehaviour
 
     public GameObject pauseMenuObject;
 
+    public GameObject loseScreenUIObject;
+
+    public bool isDead = false;
+
+    public WaveActivator waveActivator;
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -69,6 +75,7 @@ public class PlayerScript : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         ws = weapon.GetComponent<WeaponScript>();
         defaultMat = sr.material;
+        Time.timeScale = 1f;
     }
 
     // Start is called before the first frame update
@@ -92,6 +99,8 @@ public class PlayerScript : MonoBehaviour
         //hpBarImage.fillAmount = 1;
         //hpBarText.text = HP + "/" + MaxHP;
         //---------------------------------------
+
+        waveActivator = FindObjectOfType<WaveActivator>();
     }
 
     // Update is called once per frame
@@ -106,7 +115,7 @@ public class PlayerScript : MonoBehaviour
 
         timeSinceFire = timeSinceFire + Time.deltaTime;
      
-        if (Input.GetButton("Fire1") && /*ws != null &&*/  ws.isReady && timeSinceFire > 60f/ws.rateOfFire && !ws.isReloading && !pauseMenuObject.GetComponent<PauseMenu>().isPaused)
+        if (Input.GetButton("Fire1") && /*ws != null &&*/  ws.isReady && timeSinceFire > 60f/ws.rateOfFire && !ws.isReloading && !pauseMenuObject.GetComponent<PauseMenu>().isPaused && !waveActivator.isGameEnded)
         {       
             ws.Fire();
             //KnockBack - мб лучше в ws?
@@ -263,7 +272,8 @@ public class PlayerScript : MonoBehaviour
     private void Death()
     {
         Debug.Log("Death");
-        Invoke("Restart", 2f);
+        isDead = true;
+        Invoke("ShowLoseScreen", 2f);
         GoblinDeath goblinDeath = Instantiate(deathObject, transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<GoblinDeath>();
         goblinDeath.direction = hitDirection;
         gameObject.SetActive(false); 
@@ -271,9 +281,11 @@ public class PlayerScript : MonoBehaviour
         // Destroy(gameObject);
     }
 
-    private void Restart()
+    private void ShowLoseScreen()
     {
-        SceneManager.LoadScene("Arena_02");
+        loseScreenUIObject.SetActive(true);
+        Time.timeScale = 0f;
+        //SceneManager.LoadScene("Arena_02");
     }
 
 }

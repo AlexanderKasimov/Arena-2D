@@ -18,6 +18,10 @@ public class WaveActivator : MonoBehaviour
 
     private bool isReady;
 
+    public GameObject winScreenUIObject;
+
+    public bool isGameEnded = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +39,12 @@ public class WaveActivator : MonoBehaviour
         {
             if (waveManager.waveNumber == 5)
             {
+                isReady = false;
                 Debug.Log("End");
+                isGameEnded = true;
+                winScreenUIObject.SetActive(true);
+                Time.timeScale = 0f;
+                return;
             }
 
             isReady = false;

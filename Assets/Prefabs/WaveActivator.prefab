@@ -116,6 +116,8 @@ MonoBehaviour:
   activationRadius: 1
   waveManagerObject: {fileID: 0}
   useButtonObject: {fileID: 2576529853214494740}
+  winScreenUIObject: {fileID: 0}
+  isGameEnded: 0
 --- !u!95 &3188497557017622664
 Animator:
   serializedVersion: 3

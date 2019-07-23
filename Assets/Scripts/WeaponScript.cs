@@ -56,9 +56,18 @@ public class WeaponScript : MonoBehaviour
     public bool isReady;
 
     public int bulletCountInShell = 5;
+
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+
     // Start is called before the first frame update
     void Start()
-    {
+    {               
         curAmmo = magazineSize;
         isReloading = false;
 
@@ -139,9 +148,15 @@ public class WeaponScript : MonoBehaviour
             bs.movementDir = spreadDir;
         }
  
+        //VFX
+        if (animator != null)
+        {
+            animator.Play("Fire",-1,0f);
+        }
 
 
         fireSound.Play();
+        
  
         if (curAmmo <= 0)
         {
