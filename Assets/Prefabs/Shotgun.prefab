@@ -113,6 +113,10 @@ PrefabInstance:
       propertyPath: playerKnockback
       value: 4
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 529510429109044753, guid: 13ddbce13b7837a4d9a58ca0122035e6, type: 3}
+    - target: {fileID: 529510429109044753, guid: 13ddbce13b7837a4d9a58ca0122035e6,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 42574c0771e5e1849a70bfc4e19ec8da, type: 2}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13ddbce13b7837a4d9a58ca0122035e6, type: 3}
